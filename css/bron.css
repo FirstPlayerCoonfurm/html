@@ -143,7 +143,50 @@ img.background {
   width: 80vw;
 }
 
+.calendar {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
 
+.month {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.month-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.prev-month,
+.next-month {
+  cursor: pointer;
+}
+
+.days {
+  width: 100%;
+}
+
+.days th,
+.days td {
+  padding: 5px;
+  text-align: center;
+}
+
+.event-form {
+  margin-top: 20px;
+}
+
+.event-form input,
+.event-form button {
+  margin-bottom: 10px;
+}
 
 
 @media (max-width: 1024px){
