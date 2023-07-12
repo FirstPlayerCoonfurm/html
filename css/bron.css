@@ -144,49 +144,72 @@ img.background {
 }
 
 .calendar {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-}
-
-.month {
-  background-color: #f2f2f2;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 20px;
-}
-
-.month-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.prev-month,
-.next-month {
-  cursor: pointer;
-}
-
-.days {
-  width: 100%;
-}
-
-.days th,
-.days td {
-  padding: 5px;
-  text-align: center;
-}
-
-.event-form {
-  margin-top: 20px;
-}
-
-.event-form input,
-.event-form button {
-  margin-bottom: 10px;
-}
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .month {
+    background-color: #f2f2f2;
+    padding: 10px;
+    border-radius: 25px;
+    margin-bottom: 20px;
+  }
+  
+  .month-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .prev-month,
+  .next-month {
+    cursor: pointer;
+  }
+  
+  .days {
+    width: 100%;
+  }
+  
+  .days th,
+  .days td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid black;
+  }
+  
+  .current-date {
+    background-color: lightgreen;
+  }
+  
+  .event-date {
+    background-color: red;
+  }
+  .event-date:hover:after {
+    content: attr(data-event-title);
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+  }
+  
+  .event-form {
+    margin-top: 20px;
+  }
+  
+  .event-form input,
+  .event-form button {
+    margin-bottom: 10px;
+  }
 
 
 @media (max-width: 1024px){
