@@ -107,12 +107,9 @@ document.addEventListener('DOMContentLoaded', function() {
           // Получить выбранные даты из формы
           const selectedStartDate = new Date(document.getElementById('event-start-date').value);
           const selectedEndDate = new Date(document.getElementById('event-end-date').value);
-    
-          // Добавить класс для полей в выбранном промежутке дат
-          if (isDateInRange(currentDate, selectedStartDate, selectedEndDate)) {
+          if (selectedStartDate <= currentDate && currentDate <= selectedEndDate) {
             cell.classList.add('selected-date');
           }
-    
           newRow.appendChild(cell);
           date++;
         }
