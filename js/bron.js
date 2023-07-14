@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Проверить, находится ли указанная дата в промежутке между start и end
-  function isDateInRange(date, start, end) {
-    return date >= start && date <= end;
+  function isDateInRange(date, startDate, endDate) {
+    return date >= startDate && date <= endDate;
   }
 });
