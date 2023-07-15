@@ -180,7 +180,10 @@ td.not-current {
 }
 
 td.today {
-  background-color: red;
+  background-color: lightgreen;
+}
+.booked{
+  background-color: lightcoral;
 }
 
 #btnPrev {

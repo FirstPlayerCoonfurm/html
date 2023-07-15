@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="/css/bron.css" />
-    <script src="/js/bron.js"></script>
+    <script src="/js/bron.js" defer></script>
     <title>Бронирование</title>
   </head>
   <body>
@@ -33,8 +33,12 @@
       <div class="calendar-wrapper">
         <button id="btnPrev" type="button">Предыдущий</button>
         <button id="btnNext" type="button">Следующий</button>
-    <div id="divCal"></div>
-    </div>
+        <div id="divCal"></div>
+        <div id="eventList"></div>
+      </div>
+      <input type="date" id="startDate" />
+      <input type="date" id="endDate" />
+      <button onclick="bookInterval();">Забронировать</button>
 
       <div class="text2">
           <h2>Коттедж «МАРБАКА»</h2>
