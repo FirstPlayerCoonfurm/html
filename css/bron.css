@@ -182,7 +182,7 @@ td.not-current {
 td.today {
   background-color: lightgreen;
 }
-.booked{
+td.booked{
   background-color: lightcoral;
 }
 

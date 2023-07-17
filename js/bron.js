@@ -64,13 +64,21 @@ Cal.prototype.addEvent = function(title, start, end) {
 
   request.onsuccess = function(event) {
     console.log("Event added to the database");
+
+    // Окрашивание промежутка дат в календаре
+    var days = getDaysInRange(start, end);
+    days.forEach(function (day) {
+      var cell = document.querySelector(".normal");
+      if (cell) {
+        cell.classList.add("booked");
+      }
+    });
   };
 
   request.onerror = function(event) {
     console.log("Error adding event to the database");
   };
 };
-
 // Получение всех событий из базы данных IndexDB
 Cal.prototype.getEvents = function(callback) {
   if (this.db === null) {
@@ -248,19 +256,17 @@ calendar.getEvents(function(events) {
   showEvents(events);
 });
 
-// Проверка, является ли дата забронированной
-Cal.prototype.isDateBooked = function(date) {
-  var events = this.getEventsSync();
-  for (var i = 0; i < events.length; i++) {
-    var event = events[i];
-    var start = new Date(event.start);
-    var end = new Date(event.end);
-    if (date >= start && date <= end) {
-      return true;
-    }
+function getDaysInRange(startDate, endDate) {
+  var days = [];
+  var currentDate = new Date(startDate);
+
+  while (currentDate <= endDate) {
+    days.push(new Date(currentDate));
+    currentDate.setDate(currentDate.getDate() + 1);
   }
-  return false;
-};
+
+  return days;
+}
 
 // Получение всех событий из базы данных и отображение их в календаре
 calendar.getEvents(showEvents);
@@ -272,13 +278,30 @@ function bookInterval() {
   if (startDateInput && endDateInput) {
     var startDate = new Date(startDateInput.value);
     var endDate = new Date(endDateInput.value);
-    
+
     if (startDate <= endDate) {
-      calendar.addEvent("Бронирование", startDate, endDate); 
+      calendar.addEvent("Бронирование", startDate, endDate);
       calendar.isSelectingRange = false;
       calendar.showcurr();
+
+      // Добавьте класс "booked" к забронированным ячейкам
+      var days = getDaysInRange(startDate, endDate);
+      days.forEach(function (day) {
+        var cell = document.getElementById(day.toDateString());
+        if (cell) {
+          cell.classList.add("booked");
+        }
+      });
     } else {
       console.log("Invalid date range");
     }
   }
+  var days = getDaysInRange(startDate, endDate);
+  days.forEach(function (day) {
+  var cell = document.getElementById(day.toDateString());
+  if (cell) {
+    cell.classList.remove("normal");
+    cell.classList.add("booked");
+  }
+});
 }
