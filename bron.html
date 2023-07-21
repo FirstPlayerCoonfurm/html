@@ -29,16 +29,39 @@
       <h2>Наши предложения: </h2>
     </div>
     <div class="content">
-
-      <div class="calendar-wrapper">
-        <button id="btnPrev" type="button">Предыдущий</button>
-        <button id="btnNext" type="button">Следующий</button>
-        <div id="divCal"></div>
-        <div id="eventList"></div>
+      
+      <div class="calendar">
+        <h1>Event Calendar</h1>
+        <div class="calendar-container">
+          <div class="month">
+            <div class="month-header">
+              <span class="prev-month">&lt;</span>
+              <h2 class="current-month"></h2>
+              <span class="next-month">&gt;</span>
+            </div>
+            <table class="days">
+              <thead>
+                <tr>
+                  <th>Пон</th>
+                  <th>Втор</th>
+                  <th>Сред</th>
+                  <th>Четв</th>
+                  <th>Пятн</th>
+                  <th>Субб</th>
+                  <th>Воскр</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="event-form">
+            <h3>Add Event</h3>
+            <input type="date" id="event-start-date" placeholder="Start Date">
+            <input type="date" id="event-end-date" placeholder="End Date">
+            <button id="add-event-btn">Add</button>
+          </div>
+        </div>
       </div>
-      <input type="date" id="startDate" />
-      <input type="date" id="endDate" />
-      <button onclick="bookInterval();">Забронировать</button>
 
       <div class="text2">
           <h2>Коттедж «МАРБАКА»</h2>

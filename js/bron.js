@@ -4,304 +4,181 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 })
 
-var Cal = function(divId) {
-  // Сохраняем идентификатор div
-  this.divId = divId;
-  // Дни недели с понедельника
-  this.DaysOfWeek = [
-    'Пн',
-    'Вт',
-    'Ср',
-    'Чтв',
-    'Птн',
-    'Суб',
-    'Вск'
-  ];
-  // Месяцы начиная с января
-  this.Months =['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-  // Устанавливаем текущий месяц, год
-  var d = new Date();
-  this.currMonth = d.getMonth();
-  this.currYear = d.getFullYear();
-  this.currDay = d.getDate();
-  this.db = null; // Инициализируем переменную для хранения ссылки на IndexDB
-  this.openDB(); // Вызываем функцию для открытия базы данных IndexDB;
-  this.selectedStartDate = null; // Сохраняем выбранную начальную дату
-  this.selectedEndDate = null; // Сохраняем выбранную конечную дату
-  this.isSelectingRange = false; // Флаг, указывающий на то, что пользователь выбирает промежуток дат
-};
+document.addEventListener('DOMContentLoaded', function() {
+const prevMonthBtn = document.querySelector('.prev-month');
+const nextMonthBtn = document.querySelector('.next-month');
+const currentMonthLabel = document.querySelector('.current-month');
+const daysContainer = document.querySelector('.days tbody');
+const addEventBtn = document.querySelector('#add-event-btn');
 
+// Получить текущую дату
+const currentDate = new Date();
+let currentMonth = currentDate.getMonth();
+let currentYear = currentDate.getFullYear();
 
-// Открытие базы данных IndexDB
-Cal.prototype.openDB = function() {
-  var self = this;
-  var request = window.indexedDB.open("CalendarDB", 1);
+// Отобразить календарь для текущего месяца
+displayCalendar(currentMonth, currentYear);
 
-  request.onupgradeneeded = function(event) {
-    var db = event.target.result;
-    var objectStore = db.createObjectStore("events", { keyPath: "id", autoIncrement: true });
-    objectStore.createIndex("start", "start", { unique: false });
-    objectStore.createIndex("end", "end", { unique: false });
-    objectStore.createIndex("title", "title", { unique: false });
-  };
-
-  request.onsuccess = function(event) {
-    self.db = event.target.result;
-    self.showcurr();
-  };
-
-  request.onerror = function(event) {
-    console.log("Error opening database");
-  };
-};
-
-// Добавление события в базу данных IndexDB
-Cal.prototype.addEvent = function(title, start, end) {
-  var self = this;
-  var transaction = this.db.transaction(["events"], "readwrite");
-  var objectStore = transaction.objectStore("events");
-  var request = objectStore.add({title: title, start: start, end: end });
-
-  request.onsuccess = function(event) {
-    console.log("Event added to the database");
-
-    // Окрашивание промежутка дат в календаре
-    var days = getDaysInRange(start, end);
-    days.forEach(function (day) {
-      var cell = document.querySelector(".normal");
-      if (cell) {
-        cell.classList.add("booked");
-      }
-    });
-  };
-
-  request.onerror = function(event) {
-    console.log("Error adding event to the database");
-  };
-};
-// Получение всех событий из базы данных IndexDB
-Cal.prototype.getEvents = function(callback) {
-  if (this.db === null) {
-    console.log("Database is not open");
-    callback([]);
-    return;
-  }
-
-  var transaction = this.db.transaction(["events"], "readonly");
-  var objectStore = transaction.objectStore("events");
-  var request = objectStore.getAll();
-
-  request.onsuccess = function(event) {
-    callback(event.target.result);
-  };
-
-  request.onerror = function(event) {
-    console.log("Error getting events from database");
-    callback([]);
-  };
-};
-
-// Переход к следующему месяцу
-Cal.prototype.nextMonth = function() {
-  if ( this.currMonth == 11 ) {
-    this.currMonth = 0;
-    this.currYear = this.currYear + 1;
-  }
-  else {
-    this.currMonth = this.currMonth + 1;
-  }
-  this.showcurr();
-};
-// Переход к предыдущему месяцу
-Cal.prototype.previousMonth = function() {
-  if ( this.currMonth == 0 ) {
-    this.currMonth = 11;
-    this.currYear = this.currYear - 1;
-  }
-  else {
-    this.currMonth = this.currMonth - 1;
-  }
-  this.showcurr();
-};
-// Показать текущий месяц
-Cal.prototype.showcurr = function() {
-  this.showMonth(this.currYear, this.currMonth);
-};
-// Показать месяц (год, месяц)
-Cal.prototype.showMonth = function(y, m) {
-  var d = new Date()
-  // Первый день недели в выбранном месяце 
-  , firstDayOfMonth = new Date(y, m, 7).getDay()
-  // Последний день выбранного месяца
-  , lastDateOfMonth =  new Date(y, m+1, 0).getDate()
-  // Последний день предыдущего месяца
-  , lastDayOfLastMonth = m == 0 ? new Date(y-1, 11, 0).getDate() : new Date(y, m, 0).getDate();
-  var html = '<table>';
-  // Запись выбранного месяца и года
-  html += '<thead><tr>';
-  html += '<td colspan="7">' + this.Months[m] + ' ' + y + '</td>';
-  html += '</tr></thead>';
-  // заголовок дней недели
-  html += '<tr class="days">';
-  for(var i=0; i < this.DaysOfWeek.length;i++) {
-    html += '<td>' + this.DaysOfWeek[i] + '</td>';
-  }
-  html += '</tr>';
-  // Записываем дни
-  var i=1;
-  do {
-    var dow = new Date(y, m, i).getDay();
-    // Начать новую строку в понедельник
-    if ( dow == 1 ) {
-      html += '<tr>';
-    }
-    // Если первый день недели не понедельник показать последние дни предыдущего месяца
-    else if ( i == 1 ) {
-      html += '<tr>';
-      var k = lastDayOfLastMonth - firstDayOfMonth+1;
-      for(var j=0; j < firstDayOfMonth; j++) {
-        html += '<td class="not-current">' + k + '</td>';
-        k++;
-      }
-    }
-    // Записываем текущий день в цикл
-    var chk = new Date();
-    var chkY = chk.getFullYear();
-    var chkM = chk.getMonth();
-    if (chkY == this.currYear && chkM == this.currMonth && i == this.currDay) {
-      html += '<td class="today">' + i + '</td>';
-    } else {
-      html += '<td class="normal">' + i + '</td>';
-    }
-    // закрыть строку в воскресенье
-    if ( dow == 0 ) {
-      html += '</tr>';
-    }
-    // Если последний день месяца не воскресенье, показать первые дни следующего месяца
-    else if ( i == lastDateOfMonth ) {
-      var k=1;
-      for(dow; dow < 7; dow++) {
-        html += '<td class="not-current">' + k + '</td>';
-        k++;
-      }
-    }
-    i++;
-  }while(i <= lastDateOfMonth);
-  // Конец таблицы
-  html += '</table>';
-  // Записываем HTML в div
-  document.getElementById(this.divId).innerHTML = html;
-};
-// При загрузке окна
-window.onload = function() {
-  // Начать календарь
-  var c = new Cal("divCal");			
-  c.showcurr();
-  // Привязываем кнопки «Следующий» и «Предыдущий»
-  getId('btnNext').onclick = function() {
-    c.nextMonth();
-  };
-  getId('btnPrev').onclick = function() {
-    c.previousMonth();
-  };
-}
-// Получить элемент по id
-function getId(id) {
-  return document.getElementById(id);
-}
-
-// Создание экземпляра календаря
-var calendar = new Cal("divCal");
-
-// Обработчик клика на день в календаре
-document.getElementById("divCal").addEventListener("click", function(event) {
-    var target = event.target;
-    if (target.classList.contains("day") && !calendar.isSelectingRange) {
-      var day = target.getAttribute("data-day");
-      var month = target.getAttribute("data-month");
-      var year = target.getAttribute("data-year");
-      var date = new Date(year, month, day);
-      var formattedDate = formatDate(date);
-      var title = prompt("Введите название события для " + formattedDate + ":");
-      if (title) {
-        calendar.addEvent(title, date, date);
-        calendar.showcurr();
-      }
-    }
-  });
-
-// Функция для форматирования даты в формат "ДД.ММ.ГГГГ"
-function formatDate(date) {
-  var day = date.getDate();
-  var month = date.getMonth() + 1;
-  var year = date.getFullYear();
-  return day + '.' + month + '.' + year;
-}
-
-// Функция для отображения событий в календаре
-function showEvents(events) {
-  var eventList = document.getElementById("eventList");
-  eventList.innerHTML = "";
-  for (var i = 0; i < events.length; i++) {
-    var event = events[i];
-    var listItem = document.createElement("li");
-    listItem.textContent = event.title;
-    eventList.appendChild(listItem);
-  }
-}
-
-// Обновите вызов функции `getEvents` в коде:
-// Получение всех событий из базы данных и отображение их в календаре
-calendar.getEvents(function(events) {
-  showEvents(events);
+// Переключение на предыдущий месяц
+prevMonthBtn.addEventListener('click', function() {
+currentYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+displayCalendar(currentMonth, currentYear);
 });
 
-function getDaysInRange(startDate, endDate) {
-  var days = [];
-  var currentDate = new Date(startDate);
-
-  while (currentDate <= endDate) {
-    days.push(new Date(currentDate));
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
-
-  return days;
-}
-
-// Получение всех событий из базы данных и отображение их в календаре
-calendar.getEvents(showEvents);
-
-function bookInterval() {
-  var startDateInput = document.getElementById("startDate");
-  var endDateInput = document.getElementById("endDate");
-
-  if (startDateInput && endDateInput) {
-    var startDate = new Date(startDateInput.value);
-    var endDate = new Date(endDateInput.value);
-
-    if (startDate <= endDate) {
-      calendar.addEvent("Бронирование", startDate, endDate);
-      calendar.isSelectingRange = false;
-      calendar.showcurr();
-
-      // Добавьте класс "booked" к забронированным ячейкам
-      var days = getDaysInRange(startDate, endDate);
-      days.forEach(function (day) {
-        var cell = document.getElementById(day.toDateString());
-        if (cell) {
-          cell.classList.add("booked");
-        }
-      });
-    } else {
-      console.log("Invalid date range");
-    }
-  }
-  var days = getDaysInRange(startDate, endDate);
-  days.forEach(function (day) {
-  var cell = document.getElementById(day.toDateString());
-  if (cell) {
-    cell.classList.remove("normal");
-    cell.classList.add("booked");
-  }
+// Переключение на следующий месяц
+nextMonthBtn.addEventListener('click', function() {
+currentYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+currentMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+displayCalendar(currentMonth, currentYear);
 });
+
+// Добавление события при нажатии кнопки "Add"
+addEventBtn.addEventListener('click', function() {
+const eventStartDateInput = document.querySelector('#event-start-date');
+const eventEndDateInput = document.querySelector('#event-end-date');
+const eventStartDate = eventStartDateInput.value;
+const eventEndDate = eventEndDateInput.value;
+
+if (eventStartDate && eventEndDate) {
+addEventToCalendar(eventStartDate, eventEndDate);
+eventStartDateInput.value = '';
+eventEndDateInput.value = '';
 }
+});
+
+// Отобразить календарь для указанного месяца и года
+function displayCalendar(month, year) {
+// Очистить предыдущий календарь
+daysContainer.innerHTML = '';
+
+// Установить метку текущего месяца и года
+currentMonthLabel.textContent = getMonthName(month) + ' ' + year;
+
+// Получить текущую дату
+const currentDate = new Date();
+const currentMonth = currentDate.getMonth();
+const currentYear = currentDate.getFullYear();
+const currentDay = currentDate.getDate();
+
+// Получить первый день указанного месяца
+const firstDay = new Date(year, month, 1);
+
+// Определить день недели для первого дня
+let firstDayOfWeek = firstDay.getDay();
+if (firstDayOfWeek === 0) {
+firstDayOfWeek = 6; // Переносим воскресенье в конец недели
+} else {
+firstDayOfWeek--; // Переносим остальные дни на одну позицию вперед
+}
+const lastDay = new Date(year, month + 1, 0);
+const totalDays = lastDay.getDate();
+
+let date = 1;
+
+// Создать ячейки для дней в таблице
+for (let row = 0; row < 6; row++) {
+const newRow = document.createElement('tr');
+
+for (let col = 0; col < 7; col++) {
+if ((row === 0 && col < firstDayOfWeek) || date > totalDays) {
+// Создать пустую ячейку для дней до начала месяца или после его окончания
+const emptyCell = document.createElement('td');
+newRow.appendChild(emptyCell);
+} else {
+// Создать ячейку с номером дня
+const cell = document.createElement('td');
+cell.textContent = date;
+
+if (year === currentYear && month === currentMonth && date === currentDay) {
+  cell.classList.add('current-date');
+}
+
+const currentDate = new Date(year, month, date);
+const events = getEventsFromLocalStorage();
+if (events.some(event => isDateInRange(currentDate, new Date(event.startDate), new Date(event.endDate)))) {
+  cell.classList.add('event-date');
+}
+
+// Получить текущую дату
+const currentFullDate = new Date();
+currentFullDate.setHours(0, 0, 0, 0); // Установить время на начало дня
+
+if (currentFullDate > currentDate) {
+  cell.classList.add('past-date');
+}
+
+// Добавить классы для текущей даты и событий
+if (year === currentYear && month === currentMonth && date === currentDay) {
+cell.classList.add('current-date');
+}
+
+if (events.some(event => isDateInRange(currentDate, new Date(event.startDate), new Date(event.endDate)))) {
+cell.classList.add('event-date');
+}
+
+// Получить выбранные даты из формы
+const selectedStartDate = new Date(document.getElementById('event-start-date').value);
+selectedStartDate.setHours(3, 0, 0, 0); // Установить время на началоня
+const selectedEndDate = new Date(document.getElementById('event-end-date').value);
+selectedEndDate.setHours(23, 59, 59, 999); //Установить время на конец дня
+
+if (selectedStartDate <= currentDate && currentDate <= selectedEndDate) {
+cell.classList.add('selected-date');
+}
+newRow.appendChild(cell);
+date++;
+}
+}
+
+daysContainer.appendChild(newRow);
+}
+}
+
+// Получить название месяца по его номеру
+function getMonthName(month) {
+const monthNames = [
+'Январь',
+'Февраль',
+'Март',
+'Апрель',
+'Май',
+'Июнь',
+'Июль',
+'Август',
+'Сентябрь',
+'Октябрь',
+'Ноябрь',
+'Декабрь'
+];
+return monthNames[month];
+}
+
+// Получить события из локального хранилища
+function getEventsFromLocalStorage() {
+const events = localStorage.getItem('events');
+return events ? JSON.parse(events) : [];
+}
+
+// Добавить событие в календарь и сохранить в локальное хранилище
+function addEventToCalendar(startDate, endDate) {
+  const eventStartDate = new Date(startDate);
+  const eventEndDate = new Date(endDate);
+  const currentDate = new Date();
+
+  if (eventStartDate >= currentDate && eventEndDate >= currentDate) {
+    const event = { startDate, endDate };
+    const events = getEventsFromLocalStorage();
+    events.push(event);
+    localStorage.setItem('events', JSON.stringify(events));
+    displayCalendar(currentMonth, currentYear);
+  } else {
+    alert('Выберите дату, которая больше или равна текущей дате.');
+  }
+}
+
+// Проверить, находится ли указанная дата в промежутке между start и end
+function isDateInRange(date, startDate, endDate) {
+return date >= startDate && date <= endDate;
+}
+});
