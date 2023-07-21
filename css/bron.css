@@ -148,13 +148,15 @@ max-width: 600px;
 margin: 0 auto;
 padding: 10px;
 font-family: Arial, sans-serif;
+background-color: #ffffff5e;
+border-radius: 25px;
 }
 
 .month {
-background-color: #f2f2f2;
 padding: 10px;
 border-radius: 25px;
 margin-bottom: 20px;
+border: 1px solid black;
 }
 
 .month-header {
@@ -178,6 +180,7 @@ width: 100%;
 padding: 5px;
 text-align: center;
 border: 1px solid black;
+
 }
 
 .current-date {
@@ -208,6 +211,7 @@ white-space: nowrap;
 
 .event-form {
 margin-top: 20px;
+margin-left: 20%;
 }
 
 .event-form input,
