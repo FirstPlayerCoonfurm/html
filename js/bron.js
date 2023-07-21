@@ -4,6 +4,20 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 })
 
+var toggleBtn = document.querySelector('.toggle-calendar-btn');
+var calendar = document.querySelector('.calendar');
+var closeBtn = document.querySelector('.close-cal');
+
+toggleBtn.addEventListener('click', function() {
+  calendar.classList.add('show');
+  toggleBtn.classList.add('hidden');
+});
+
+closeBtn.addEventListener('click', function() {
+  calendar.classList.remove('show');
+  toggleBtn.classList.remove('hidden');
+});
+
 document.addEventListener('DOMContentLoaded', function() {
 const prevMonthBtn = document.querySelector('.prev-month');
 const nextMonthBtn = document.querySelector('.next-month');
