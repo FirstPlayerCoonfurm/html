@@ -350,7 +350,12 @@ img.background {
     margin: 15px 0;
     border-radius: 15px;
 }
-
+.calendars{
+    background-color: #ffffff5e;
+    padding: 5px;
+    margin: 15px 0;
+    border-radius: 15px;
+}
 
 @media (max-width: 1024px){
     .burger{
