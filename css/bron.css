@@ -256,10 +256,12 @@ img.background {
 }
 
 .prev-month:hover{
+    transition: 0.3s ease;
     color: #28283b;
     font-weight: bold;
 }
 .next-month:hover{
+    transition: 0.3s ease;
     color: #28283b;
     font-weight: bold;
 }
@@ -310,6 +312,43 @@ img.background {
 .event-form input,
 .event-form button {
     margin-bottom: 10px;
+}
+
+.text2{
+    background-color: #ffffff5e;
+    padding: 5px;
+    border-radius: 15px;
+    margin: 15px 0;
+}
+.text3{
+    background-color: #ffffff5e;
+    padding: 5px;
+    border-radius: 15px;
+    margin: 15px 0;
+}
+.text4{
+    background-color: #ffffff5e;
+    padding: 5px;
+    border-radius: 15px;
+    margin: 15px 0;
+}
+.text5{
+    background-color: #ffffff5e;
+    padding: 5px;
+    margin: 15px 0;
+    border-radius: 15px;
+}
+.text6{
+    background-color: #ffffff5e;
+    padding: 5px;
+    margin: 15px 0;
+    border-radius: 15px;
+}
+.text7{
+    background-color: #ffffff5e;
+    padding: 5px;
+    margin: 15px 0;
+    border-radius: 15px;
 }
 
 
