@@ -147,6 +147,11 @@ img.background {
     background-color: lightgreen;
 }
 
+.calendar-container {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
 .text2{
     background-color: #ffffff5e;
     padding: 5px;
