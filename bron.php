@@ -129,17 +129,19 @@
 
         // Обработка формы бронирования
         if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
-            $start_date = $_POST['start_date'];
-            $end_date = $_POST['end_date'];
+          $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
+          $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
 
             // Запрос на добавление брони в базу данных
-            $sql = "INSERT INTO Marb_house (startDate, endDate) VALUES ('$start_date', '$end_date')";
-
-            if ($conn->query($sql) === TRUE) {
-                echo "Бронирование успешно добавлено!";
-            } else {
-                echo "Ошибка при добавлении бронирования: " . $conn->error;
+            $stmt = $conn->prepare("INSERT INTO Marb_house (startDate, endDate) VALUES (?, ?)");
+            $stmt->bind_param("ss", $start_date, $end_date);
+            if ($stmt->execute()) {
+              echo "Бронирование успешно добавлено!";
             }
+            else {
+              echo "Ошибка при добавлении бронирования: " . $conn->error;
+            }
+            $conn->close();
         }
     }
 
