@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="/css/bron.css" />
     <script src="/js/bron.js" defer></script>
-    <script src="/js/bron_proff.js" defer></script>
     <title>Бронирование</title>
   </head>
   <body>
@@ -30,16 +29,132 @@
       <h2>Наши предложения: </h2>
     </div>
     <div class="content">
-      
-      
       <div class="text2">
           <h2>Коттедж «МАРБАКА»</h2>
           <p>Двухэтажный дом в скандинавском стиле с просторной гостинной, уютной  кухонкой и жаркой сауной.
               Хотите жить в доме у моря?
               Марбака – воплощение этой мечты!
               Деревянные полы, лестницы, в окнах – с одной стороны качаются зеленым морем сосны, с другой – манят и зовут волны Обского моря.
-              Это другая реальность, другой воздух, здесь время замедляет скорость и жизнь состоит из мгновений, наполненных смыслом.</p>  
-      </div>
+              Это другая реальность, другой воздух, здесь время замедляет скорость и жизнь состоит из мгновений, наполненных смыслом.</p>
+
+              <?php
+    function createCalendar($year)
+    {
+        // Создание таблицы календаря
+        $calendar = '<table><tr>';
+
+        $monthNames = array(
+            'Январь', 'Февраль', 'Март', 'Апрель',
+            'Май', 'Июнь', 'Июль', 'Август',
+            'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+        );
+      
+        $currentDay = date('j');
+        $currentMonth = date('n');
+        $currentYear = date('Y');
+
+        for ($month = 1; $month <= 12; $month++) {
+            // Первый день месяца
+            $firstDay = date("N", strtotime("$year-$month-01"));
+
+            // Общее количество дней в месяце
+            $totalDays = date("t", strtotime("$year-$month-01"));
+
+            // Название месяца
+            $monthName = $monthNames[$month - 1];
+
+            // Создание заголовка месяца
+            $calendar .= '<td style="vertical-align: top; padding: 10px;"><table><tr><th colspan="7">' . $monthName . '</th></tr>';
+            $calendar .= '<tr><th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Вс</th></tr>';
+
+            $dayCounter = 1;
+
+            // Заполнение пустых ячеек до первого дня месяца
+            $calendar .= '<tr>';
+            for ($i = 1; $i < $firstDay; $i++) {
+                $calendar .= '<td></td>';
+            }
+
+            // Заполнение ячеек с датами
+            while ($dayCounter <= $totalDays) {
+                for ($i = $firstDay; $i <= 7; $i++) {
+                    if ($dayCounter > $totalDays) {
+                        break;
+                    }
+                    
+                    // Добавление класса "current-day" для текущей даты
+                    $class = ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) ? 'current-day' : '';
+
+                    $calendar .= "<td class='$class'>$dayCounter</td>";
+                    $dayCounter++;
+                }
+
+                // Начать новую строку после каждой недели
+                if ($dayCounter <= $totalDays) {
+                    $calendar .= '</tr><tr>';
+                }
+
+                // Сброс первого дня недели после окончания каждой недели
+                $firstDay = 1;
+            }
+
+            $calendar .= '</tr></table></td>';
+
+            // Добавить отступы между календарями
+            if ($month == 6) {
+                $calendar .= '</tr><tr style="height: 20px;"></tr><tr>';
+            }
+        }
+
+        $calendar .= '</tr></table>';
+
+        return $calendar;
+    }
+
+    // Текущий год
+    $currentYear = date('Y');
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $servername = "localhost";
+        $username = "root";
+        $password = "password";
+        $dbname = "HOUSES";
+
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        // Проверка соединения
+        if ($conn->connect_error) {
+            die("Ошибка подключения: " . $conn->connect_error);
+        }
+
+        // Обработка формы бронирования
+        if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
+            $start_date = $_POST['start_date'];
+            $end_date = $_POST['end_date'];
+
+            // Запрос на добавление брони в базу данных
+            $sql = "INSERT INTO Marb_house (startDate, endDate) VALUES ('$start_date', '$end_date')";
+
+            if ($conn->query($sql) === TRUE) {
+                echo "Бронирование успешно добавлено!";
+            } else {
+                echo "Ошибка при добавлении бронирования: " . $conn->error;
+            }
+        }
+    }
+
+    echo createCalendar($currentYear);
+?>
+              
+              <div class="event-form">
+                <h3>Бронирование</h3>
+                <form method="POST" action="">
+                  <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required>
+                  <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
+                  <button type="submit" id="add-event-btn">Забронировать</button>
+                </form>
+              </div>
+        </div>
   
       <div class="text3">
           <h2>Дом на воде «ПРОФЕССОР»</h2>
