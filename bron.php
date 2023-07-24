@@ -18,7 +18,6 @@
                 <ul class="menu__list">
                     <li class="menu__item"><a class="menu__link" href="index.html">Главная</a></li>
                     <li class="menu__item"><a class="menu__link" href="about.html">О нас</a></li>
-
                     <li class="menu__item"><a class="menu__link" href="news.html">Новости</a></li>
                     <li class="menu__item"><a class="menu__link" href="bron.html">Бронирование</a></li>
                 </ul>
@@ -139,14 +138,14 @@
                   }
 
                   // Запрос на получение забронированных дат
-                  $sql = "SELECT startDate, endDate FROM Marb_house";
+                  $sql = "SELECT 'Начало бронирования', 'Конец бронирования' FROM Marb_house";
                   $result = $conn->query($sql);
 
                   if ($result->num_rows > 0) {
                       // Добавление забронированных дат в массив
                       while ($row = $result->fetch_assoc()) {
-                          $startDate = $row["startDate"];
-                          $endDate = $row["endDate"];
+                          $startDate = $row["Начало бронирования"];
+                          $endDate = $row["Конец бронирования"];
 
                           $start = new DateTime($startDate);
                           $end = new DateTime($endDate);
@@ -184,7 +183,7 @@
                       $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
                       $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
                       // Запрос на добавление брони в базу данных
-                      $stmt = $conn->prepare("INSERT INTO Marb_house (startDate, endDate) VALUES (?, ?)");
+                      $stmt = $conn->prepare("INSERT INTO Marb_house ('Начало бронирования', 'Конец бронирования') VALUES (?, ?)");
                       $stmt->bind_param("ss", $start_date, $end_date);
                       if ($stmt->execute()) {
                           // Редирект после успешного добавления бронирования
@@ -321,14 +320,14 @@
                   }
 
                   // Запрос на получение забронированных дат
-                  $sql = "SELECT startDate, endDate FROM Proff_house";
+                  $sql = "SELECT 'Начало брониования', 'Конец бронирования' FROM Proff_house";
                   $result = $conn->query($sql);
 
                   if ($result->num_rows > 0) {
                       // Добавление забронированных дат в массив
                       while ($row = $result->fetch_assoc()) {
-                          $startDate = $row["startDate"];
-                          $endDate = $row["endDate"];
+                          $startDate = $row["Начало бронирования"];
+                          $endDate = $row["Конец бронирования"];
 
                           $start = new DateTime($startDate);
                           $end = new DateTime($endDate);
@@ -366,7 +365,7 @@
                       $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
                       $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
                       // Запрос на добавление брони в базу данных
-                      $stmt = $conn->prepare("INSERT INTO Proff_house (startDate, endDate) VALUES (?, ?)");
+                      $stmt = $conn->prepare("INSERT INTO Proff_house ('Начало бронирования', 'Конец бронирования') VALUES (?, ?)");
                       $stmt->bind_param("ss", $start_date, $end_date);
                       if ($stmt->execute()) {
                           // Редирект после успешного добавления бронирования
@@ -502,14 +501,14 @@
                   }
 
                   // Запрос на получение забронированных дат
-                  $sql = "SELECT startDate, endDate FROM U_vod_house";
+                  $sql = "SELECT 'Начало бронирования', 'Конец бронирования' FROM U_vod_house";
                   $result = $conn->query($sql);
 
                   if ($result->num_rows > 0) {
                       // Добавление забронированных дат в массив
                       while ($row = $result->fetch_assoc()) {
-                          $startDate = $row["startDate"];
-                          $endDate = $row["endDate"];
+                          $startDate = $row["Начало бронирования"];
+                          $endDate = $row["Конец бронирования"];
 
                           $start = new DateTime($startDate);
                           $end = new DateTime($endDate);
@@ -547,7 +546,7 @@
                       $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
                       $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
                       // Запрос на добавление брони в базу данных
-                      $stmt = $conn->prepare("INSERT INTO U_vod_house (startDate, endDate) VALUES (?, ?)");
+                      $stmt = $conn->prepare("INSERT INTO U_vod_house ('Начало бронирования', 'Конец бронирования') VALUES (?, ?)");
                       $stmt->bind_param("ss", $start_date, $end_date);
                       if ($stmt->execute()) {
                           // Редирект после успешного добавления бронирования
@@ -682,14 +681,14 @@
                       die("Ошибка подключения: " . $conn->connect_error);
                   }
                   // Запрос на получение забронированных дат
-                  $sql = "SELECT startDate, endDate FROM Spher_house";
+                  $sql = "SELECT 'Начало брониррования', 'Конец бронирования' FROM Spher_house";
                   $result = $conn->query($sql);
 
                   if ($result->num_rows > 0) {
                       // Добавление забронированных дат в массив
                       while ($row = $result->fetch_assoc()) {
-                          $startDate = $row["startDate"];
-                          $endDate = $row["endDate"];
+                          $startDate = $row["Начало бронирования"];
+                          $endDate = $row["Конец бронирования"];
 
                           $start = new DateTime($startDate);
                           $end = new DateTime($endDate);
@@ -727,7 +726,7 @@
                       $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
                       $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
                       // Запрос на добавление брони в базу данных
-                      $stmt = $conn->prepare("INSERT INTO Spher_house (startDate, endDate) VALUES (?, ?)");
+                      $stmt = $conn->prepare("INSERT INTO Spher_house ('Начало бронирования', 'Конец бронирования') VALUES (?, ?)");
                       $stmt->bind_param("ss", $start_date, $end_date);
                       if ($stmt->execute()) {
                           // Редирект после успешного добавления бронирования
@@ -862,14 +861,14 @@
                     }
 
                     // Запрос на получение забронированных дат
-                    $sql = "SELECT startDate, endDate FROM Trail_house";
+                    $sql = "SELECT 'Начало бронирования', 'Конец бронирования' FROM Trail_house";
                     $result = $conn->query($sql);
 
                     if ($result->num_rows > 0) {
                         // Добавление забронированных дат в массив
                         while ($row = $result->fetch_assoc()) {
-                            $startDate = $row["startDate"];
-                            $endDate = $row["endDate"];
+                            $startDate = $row["Начало бронирования"];
+                            $endDate = $row["Конец бронирования"];
 
                             $start = new DateTime($startDate);
                             $end = new DateTime($endDate);
@@ -907,7 +906,7 @@
                         $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
                         $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
                         // Запрос на добавление брони в базу данных
-                        $stmt = $conn->prepare("INSERT INTO Trail_house (startDate, endDate) VALUES (?, ?)");
+                        $stmt = $conn->prepare("INSERT INTO Trail_house ('Начало бронирования', 'Конец бронирования') VALUES (?, ?)");
                         $stmt->bind_param("ss", $start_date, $end_date);
                         if ($stmt->execute()) {
                             // Редирект после успешного добавления бронирования
@@ -971,8 +970,6 @@
               Размещение с собаками и другими домашними животными возможно только по предварительной договоренности.<br><br><br>
               Приятного отдыха!</p>
       </div>
-
     </div>
-    
   </body>
 </html>
