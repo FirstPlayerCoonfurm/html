@@ -18,6 +18,7 @@
                 <ul class="menu__list">
                     <li class="menu__item"><a class="menu__link" href="index.html">Главная</a></li>
                     <li class="menu__item"><a class="menu__link" href="about.html">О нас</a></li>
+
                     <li class="menu__item"><a class="menu__link" href="news.html">Новости</a></li>
                     <li class="menu__item"><a class="menu__link" href="bron.html">Бронирование</a></li>
                 </ul>
@@ -36,110 +37,167 @@
               Марбака – воплощение этой мечты!
               Деревянные полы, лестницы, в окнах – с одной стороны качаются зеленым морем сосны, с другой – манят и зовут волны Обского моря.
               Это другая реальность, другой воздух, здесь время замедляет скорость и жизнь состоит из мгновений, наполненных смыслом.</p>
-              <div class="calendar-container">
+              <button class="toggle-calendar-btn1">Открыть календарь</button>
+              <div class="calendar-container-1">
+              <button class="close-cal1" type="button">Закрыть</button>
               <?php
               function createCalendar($year)
               {
                 // Создание таблицы календаря
                 $calendar = '<table><tr>';
 
-                $monthNames = array(
-                    'Январь', 'Февраль', 'Март', 'Апрель',
-                    'Май', 'Июнь', 'Июль', 'Август',
-                    'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-                );
-              
-                $currentDay = date('j');
-                $currentMonth = date('n');
-                $currentYear = date('Y');
+                  $monthNames = array(
+                      'Январь', 'Февраль', 'Март', 'Апрель',
+                      'Май', 'Июнь', 'Июль', 'Август',
+                      'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+                  );
 
-                for ($month = 1; $month <= 12; $month++) {
-                    // Первый день месяца
-                    $firstDay = date("N", strtotime("$year-$month-01"));
+                  $currentDay = date('j');
+                  $currentMonth = date('n');
+                  $currentYear = date('Y');
 
-                    // Общее количество дней в месяце
-                    $totalDays = date("t", strtotime("$year-$month-01"));
+                  // Получение забронированных дат из базы данных
+                  $bookedDates = getBookedDatesFromDatabase();
 
-                    // Название месяца
-                    $monthName = $monthNames[$month - 1];
+                  for ($month = 1; $month <= 12; $month++) {
+                      // Первый день месяца
+                      $firstDay = date("N", strtotime("$year-$month-01"));
 
-                    // Создание заголовка месяца
-                    $calendar .= '<td style="vertical-align: top; padding: 10px;"><table><tr><th colspan="7">' . $monthName . '</th></tr>';
-                    $calendar .= '<tr><th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Вс</th></tr>';
+                      // Общее количество дней в месяце
+                      $totalDays = date("t", strtotime("$year-$month-01"));
 
-                    $dayCounter = 1;
+                      // Название месяца
+                      $monthName = $monthNames[$month - 1];
 
-                    // Заполнение пустых ячеек до первого дня месяца
-                    $calendar .= '<tr>';
-                    for ($i = 1; $i < $firstDay; $i++) {
-                        $calendar .= '<td></td>';
-                    }
+                      // Создание заголовка месяца
+                      $calendar .= '<td style="vertical-align: top; padding: 10px;"><table><tr><th colspan="7">' . $monthName . '</th></tr>';
+                      $calendar .= '<tr><th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Вс</th></tr>';
 
-                    // Заполнение ячеек с датами
-                    while ($dayCounter <= $totalDays) {
-                        for ($i = $firstDay; $i <= 7; $i++) {
-                            if ($dayCounter > $totalDays) {
-                                break;
-                            }
-                            
-                            // Добавление класса "current-day" для текущей даты
-                            $class = ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) ? 'current-day' : '';
+                      $dayCounter = 1;
 
-                            $calendar .= "<td class='$class'>$dayCounter</td>";
-                            $dayCounter++;
-                        }
+                      // Заполнение пустых ячеек до первого дня месяца
+                      $calendar .= '<tr>';
+                      for ($i = 1; $i < $firstDay; $i++) {
+                          $calendar .= '<td></td>';
+                      }
 
-                        // Начать новую строку после каждой недели
-                        if ($dayCounter <= $totalDays) {
-                            $calendar .= '</tr><tr>';
-                        }
+                      // Заполнение ячеек с датами
+                      while ($dayCounter <= $totalDays) {
+                          for ($i = $firstDay; $i <= 7; $i++) {
+                              if ($dayCounter > $totalDays) {
+                                  break;
+                              }
 
-                        // Сброс первого дня недели после окончания каждой недели
-                        $firstDay = 1;
-                    }
+                              // Добавление классов "current-day" и "booked-day"
+                              $class = '';
+                              if ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) {
+                                  $class .= 'current-day ';
+                              }
+                              if (in_array("$year-$month-$dayCounter", $bookedDates)) {
+                                  $class .= 'booked-day';
+                              }
 
-                    $calendar .= '</tr></table></td>';
+                              $calendar .= "<td class='$class'>$dayCounter</td>";
+                              $dayCounter++;
+                          }
 
-                    // Добавить отступы между календарями
-                    if ($month == 6) {
-                        $calendar .= '</tr><tr style="height: 20px;"></tr><tr>';
-                    }
-                }
-                $calendar .= '</tr></table>';
-                return $calendar;
+                          // Начать новую строку после каждой недели
+                          if ($dayCounter <= $totalDays) {
+                              $calendar .= '</tr><tr>';
+                          }
+
+                          // Сброс первого дня недели после окончания каждой недели
+                          $firstDay = 1;
+                      }
+
+                      $calendar .= '</tr></table></td>';
+
+                      // Добавить отступы между календарями
+                      if ($month == 6) {
+                          $calendar .= '</tr><tr style="height: 20px;"></tr><tr>';
+                      }
+                  }
+                  $calendar .= '</tr></table>';
+                  
+                  return $calendar;
               }
+
+              // Получение забронированных дат из базы данных
+              function getBookedDatesFromDatabase()
+              {
+                  $bookedDates = array();
+
+                  $servername = "localhost";
+                  $username = "root";
+                  $password = "password";
+                  $dbname = "HOUSES";
+
+                  $conn = new mysqli($servername, $username, $password, $dbname);
+                  // Проверка соединения
+                  if ($conn->connect_error) {
+                      die("Ошибка подключения: " . $conn->connect_error);
+                  }
+
+                  // Запрос на получение забронированных дат
+                  $sql = "SELECT startDate, endDate FROM Marb_house";
+                  $result = $conn->query($sql);
+
+                  if ($result->num_rows > 0) {
+                      // Добавление забронированных дат в массив
+                      while ($row = $result->fetch_assoc()) {
+                          $startDate = $row["startDate"];
+                          $endDate = $row["endDate"];
+
+                          $start = new DateTime($startDate);
+                          $end = new DateTime($endDate);
+
+                          $interval = DateInterval::createFromDateString('1 day');
+                          $period = new DatePeriod($start, $interval, $end);
+
+                          foreach ($period as $date) {
+                              $bookedDates[] = $date->format("Y-m-d");
+                          }
+                      }
+                  }
+
+                  $conn->close();
+
+                  return $bookedDates;
+              }
+
               // Текущий год
               $currentYear = date('Y');
 
-              
               if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $servername = "localhost";
-                $username = "root";
-                $password = "password";
-                $dbname = "HOUSES";
+                  $servername = "localhost";
+                  $username = "root";
+                  $password = "password";
+                  $dbname = "HOUSES";
 
-                $conn = new mysqli($servername, $username, $password, $dbname);
-                // Проверка соединения
-                if ($conn->connect_error) {
-                  die("Ошибка подключения: " . $conn->connect_error);
-                }
-                // Обработка формы бронирования
-                if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
-                  $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
-                  $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
-                  // Запрос на добавление брони в базу данных
-                  $stmt = $conn->prepare("INSERT INTO Marb_house (startDate, endDate) VALUES (?, ?)");
-                  $stmt->bind_param("ss", $start_date, $end_date);
-                  if ($stmt->execute()) {
-                    echo "Бронирование успешно добавлено!";
+                  $conn = new mysqli($servername, $username, $password, $dbname);
+                  // Проверка соединения
+                  if ($conn->connect_error) {
+                      die("Ошибка подключения: " . $conn->connect_error);
                   }
-                  else {
-                    echo "Ошибка при добавлении бронирования: " . $conn->error;
+                  // Обработка формы бронирования
+                  if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
+                      $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
+                      $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
+                      // Запрос на добавление брони в базу данных
+                      $stmt = $conn->prepare("INSERT INTO Marb_house (startDate, endDate) VALUES (?, ?)");
+                      $stmt->bind_param("ss", $start_date, $end_date);
+                      if ($stmt->execute()) {
+                          // Редирект после успешного добавления бронирования
+                          header("Location: bron.php");
+                          exit();
+                      } else {
+                          echo "Ошибка при добавлении бронирования: " . $conn->error;
+                      }
+                      $conn->close();
                   }
-                  $conn->close();
-                }
               }
-              echo createCalendar($currentYear);
+
+              echo createCalendar($currentYear, $getBookedDatesFromDatabase);
               ?>
               </div>
               <div class="event-form">
@@ -161,6 +219,177 @@
               Уютные двухместные каюты вверху и внизу.
               Прямо за бортом – песчаный пляж.
               Санузел, душ на территории в 50 метрах от Дома на воде.</p>
+              <button class="toggle-calendar-btn2">Открыть календарь</button>
+              <div class="calendar-container-2">
+              <button class="close-cal2" type="button">Закрыть</button>
+              <?php
+              function createCalendar1($year)
+              {
+                // Создание таблицы календаря
+                $calendar1 = '<table><tr>';
+
+                  $monthNames = array(
+                      'Январь', 'Февраль', 'Март', 'Апрель',
+                      'Май', 'Июнь', 'Июль', 'Август',
+                      'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+                  );
+
+                  $currentDay = date('j');
+                  $currentMonth = date('n');
+                  $currentYear = date('Y');
+
+                  // Получение забронированных дат из базы данных
+                  $bookedDates = getBookedDatesFromDatabase1();
+
+                  for ($month = 1; $month <= 12; $month++) {
+                      // Первый день месяца
+                      $firstDay = date("N", strtotime("$year-$month-01"));
+
+                      // Общее количество дней в месяце
+                      $totalDays = date("t", strtotime("$year-$month-01"));
+
+                      // Название месяца
+                      $monthName = $monthNames[$month - 1];
+
+                      // Создание заголовка месяца
+                      $calendar1 .= '<td style="vertical-align: top; padding: 10px;"><table><tr><th colspan="7">' . $monthName . '</th></tr>';
+                      $calendar1 .= '<tr><th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Вс</th></tr>';
+
+                      $dayCounter = 1;
+
+                      // Заполнение пустых ячеек до первого дня месяца
+                      $calendar1 .= '<tr>';
+                      for ($i = 1; $i < $firstDay; $i++) {
+                          $calendar1 .= '<td></td>';
+                      }
+
+                      // Заполнение ячеек с датами
+                      while ($dayCounter <= $totalDays) {
+                          for ($i = $firstDay; $i <= 7; $i++) {
+                              if ($dayCounter > $totalDays) {
+                                  break;
+                              }
+
+                              // Добавление классов "current-day" и "booked-day"
+                              $class = '';
+                              if ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) {
+                                  $class .= 'current-day ';
+                              }
+                              if (in_array("$year-$month-$dayCounter", $bookedDates)) {
+                                  $class .= 'booked-day';
+                              }
+
+                              $calendar1 .= "<td class='$class'>$dayCounter</td>";
+                              $dayCounter++;
+                          }
+
+                          // Начать новую строку после каждой недели
+                          if ($dayCounter <= $totalDays) {
+                              $calendar1 .= '</tr><tr>';
+                          }
+
+                          // Сброс первого дня недели после окончания каждой недели
+                          $firstDay = 1;
+                      }
+
+                      $calendar1 .= '</tr></table></td>';
+
+                      // Добавить отступы между календарями
+                      if ($month == 6) {
+                          $calendar1 .= '</tr><tr style="height: 20px;"></tr><tr>';
+                      }
+                  }
+                  $calendar1 .= '</tr></table>';
+                  
+                  return $calendar1;
+              }
+
+              // Получение забронированных дат из базы данных
+              function getBookedDatesFromDatabase1()
+              {
+                  $bookedDates = array();
+
+                  $servername = "localhost";
+                  $username = "root";
+                  $password = "password";
+                  $dbname = "HOUSES";
+
+                  $conn = new mysqli($servername, $username, $password, $dbname);
+                  // Проверка соединения
+                  if ($conn->connect_error) {
+                      die("Ошибка подключения: " . $conn->connect_error);
+                  }
+
+                  // Запрос на получение забронированных дат
+                  $sql = "SELECT startDate, endDate FROM Proff_house";
+                  $result = $conn->query($sql);
+
+                  if ($result->num_rows > 0) {
+                      // Добавление забронированных дат в массив
+                      while ($row = $result->fetch_assoc()) {
+                          $startDate = $row["startDate"];
+                          $endDate = $row["endDate"];
+
+                          $start = new DateTime($startDate);
+                          $end = new DateTime($endDate);
+
+                          $interval = DateInterval::createFromDateString('1 day');
+                          $period = new DatePeriod($start, $interval, $end);
+
+                          foreach ($period as $date) {
+                              $bookedDates[] = $date->format("Y-m-d");
+                          }
+                      }
+                  }
+
+                  $conn->close();
+
+                  return $bookedDates;
+              }
+
+              // Текущий год
+              $currentYear = date('Y');
+
+              if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                  $servername = "localhost";
+                  $username = "root";
+                  $password = "password";
+                  $dbname = "HOUSES";
+
+                  $conn = new mysqli($servername, $username, $password, $dbname);
+                  // Проверка соединения
+                  if ($conn->connect_error) {
+                      die("Ошибка подключения: " . $conn->connect_error);
+                  }
+                  // Обработка формы бронирования
+                  if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
+                      $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
+                      $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
+                      // Запрос на добавление брони в базу данных
+                      $stmt = $conn->prepare("INSERT INTO Proff_house (startDate, endDate) VALUES (?, ?)");
+                      $stmt->bind_param("ss", $start_date, $end_date);
+                      if ($stmt->execute()) {
+                          // Редирект после успешного добавления бронирования
+                          header("Location: bron.php");
+                          exit();
+                      } else {
+                          echo "Ошибка при добавлении бронирования: " . $conn->error;
+                      }
+                      $conn->close();
+                  }
+              }
+
+              echo createCalendar1($currentYear, $getBookedDatesFromDatabase1);
+              ?>
+              </div>
+              <div class="event-form">
+                <h3>Бронирование</h3>
+                <form method="POST" action="">
+                  <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required>
+                  <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
+                  <button type="submit" id="add-event-btn">Забронировать</button>
+                </form>
+              </div>
       </div>
   
       <div class="text4">
@@ -171,6 +400,177 @@
               В доме горница с деревянным столом и скамьями, удобным диваном и креслами, мини кухня и душ.
               Спальня на втором этаже под крышей.
               Здесь дышится и спится особенно легко и спокойно.</p>
+              <button class="toggle-calendar-btn3">Открыть календарь</button>
+              <div class="calendar-container-3">
+              <button class="close-cal3" type="button">Закрыть</button>
+              <?php
+              function createCalendar2($year)
+              {
+                // Создание таблицы календаря
+                $calendar2 = '<table><tr>';
+
+                  $monthNames = array(
+                      'Январь', 'Февраль', 'Март', 'Апрель',
+                      'Май', 'Июнь', 'Июль', 'Август',
+                      'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+                  );
+
+                  $currentDay = date('j');
+                  $currentMonth = date('n');
+                  $currentYear = date('Y');
+
+                  // Получение забронированных дат из базы данных
+                  $bookedDates = getBookedDatesFromDatabase2();
+
+                  for ($month = 1; $month <= 12; $month++) {
+                      // Первый день месяца
+                      $firstDay = date("N", strtotime("$year-$month-01"));
+
+                      // Общее количество дней в месяце
+                      $totalDays = date("t", strtotime("$year-$month-01"));
+
+                      // Название месяца
+                      $monthName = $monthNames[$month - 1];
+
+                      // Создание заголовка месяца
+                      $calendar2 .= '<td style="vertical-align: top; padding: 10px;"><table><tr><th colspan="7">' . $monthName . '</th></tr>';
+                      $calendar2 .= '<tr><th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Вс</th></tr>';
+
+                      $dayCounter = 1;
+
+                      // Заполнение пустых ячеек до первого дня месяца
+                      $calendar2 .= '<tr>';
+                      for ($i = 1; $i < $firstDay; $i++) {
+                          $calendar2 .= '<td></td>';
+                      }
+
+                      // Заполнение ячеек с датами
+                      while ($dayCounter <= $totalDays) {
+                          for ($i = $firstDay; $i <= 7; $i++) {
+                              if ($dayCounter > $totalDays) {
+                                  break;
+                              }
+
+                              // Добавление классов "current-day" и "booked-day"
+                              $class = '';
+                              if ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) {
+                                  $class .= 'current-day ';
+                              }
+                              if (in_array("$year-$month-$dayCounter", $bookedDates)) {
+                                  $class .= 'booked-day';
+                              }
+
+                              $calendar2 .= "<td class='$class'>$dayCounter</td>";
+                              $dayCounter++;
+                          }
+
+                          // Начать новую строку после каждой недели
+                          if ($dayCounter <= $totalDays) {
+                              $calendar2 .= '</tr><tr>';
+                          }
+
+                          // Сброс первого дня недели после окончания каждой недели
+                          $firstDay = 1;
+                      }
+
+                      $calendar2 .= '</tr></table></td>';
+
+                      // Добавить отступы между календарями
+                      if ($month == 6) {
+                          $calendar2 .= '</tr><tr style="height: 20px;"></tr><tr>';
+                      }
+                  }
+                  $calendar2 .= '</tr></table>';
+                  
+                  return $calendar2;
+              }
+
+              // Получение забронированных дат из базы данных
+              function getBookedDatesFromDatabase2()
+              {
+                  $bookedDates = array();
+
+                  $servername = "localhost";
+                  $username = "root";
+                  $password = "password";
+                  $dbname = "HOUSES";
+
+                  $conn = new mysqli($servername, $username, $password, $dbname);
+                  // Проверка соединения
+                  if ($conn->connect_error) {
+                      die("Ошибка подключения: " . $conn->connect_error);
+                  }
+
+                  // Запрос на получение забронированных дат
+                  $sql = "SELECT startDate, endDate FROM U_vod_house";
+                  $result = $conn->query($sql);
+
+                  if ($result->num_rows > 0) {
+                      // Добавление забронированных дат в массив
+                      while ($row = $result->fetch_assoc()) {
+                          $startDate = $row["startDate"];
+                          $endDate = $row["endDate"];
+
+                          $start = new DateTime($startDate);
+                          $end = new DateTime($endDate);
+
+                          $interval = DateInterval::createFromDateString('1 day');
+                          $period = new DatePeriod($start, $interval, $end);
+
+                          foreach ($period as $date) {
+                              $bookedDates[] = $date->format("Y-m-d");
+                          }
+                      }
+                  }
+
+                  $conn->close();
+
+                  return $bookedDates;
+              }
+
+              // Текущий год
+              $currentYear = date('Y');
+
+              if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                  $servername = "localhost";
+                  $username = "root";
+                  $password = "password";
+                  $dbname = "HOUSES";
+
+                  $conn = new mysqli($servername, $username, $password, $dbname);
+                  // Проверка соединения
+                  if ($conn->connect_error) {
+                      die("Ошибка подключения: " . $conn->connect_error);
+                  }
+                  // Обработка формы бронирования
+                  if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
+                      $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
+                      $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
+                      // Запрос на добавление брони в базу данных
+                      $stmt = $conn->prepare("INSERT INTO U_vod_house (startDate, endDate) VALUES (?, ?)");
+                      $stmt->bind_param("ss", $start_date, $end_date);
+                      if ($stmt->execute()) {
+                          // Редирект после успешного добавления бронирования
+                          header("Location: bron.php");
+                          exit();
+                      } else {
+                          echo "Ошибка при добавлении бронирования: " . $conn->error;
+                      }
+                      $conn->close();
+                  }
+              }
+
+              echo createCalendar2($currentYear, $getBookedDatesFromDatabase2);
+              ?>
+              </div>
+              <div class="event-form">
+                <h3>Бронирование</h3>
+                <form method="POST" action="">
+                  <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required>
+                  <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
+                  <button type="submit" id="add-event-btn">Забронировать</button>
+                </form>
+              </div>
       </div>
   
       <div class="text5">
@@ -181,6 +581,176 @@
               Есть чайник, предоставляется холодильник.
               Рядом – костровое место, мангал, столик, скамейки, умывальник.
               А в 20 метрах – комфортный душ, туалет.</p>
+              <button class="toggle-calendar-btn4">Открыть календарь</button>
+              <div class="calendar-container-4">
+              <button class="close-cal4" type="button">Закрыть</button>
+              <?php
+              function createCalendar3($year)
+              {
+                // Создание таблицы календаря
+                $calendar3 = '<table><tr>';
+
+                  $monthNames = array(
+                      'Январь', 'Февраль', 'Март', 'Апрель',
+                      'Май', 'Июнь', 'Июль', 'Август',
+                      'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+                  );
+
+                  $currentDay = date('j');
+                  $currentMonth = date('n');
+                  $currentYear = date('Y');
+
+                  // Получение забронированных дат из базы данных
+                  $bookedDates = getBookedDatesFromDatabase3();
+
+                  for ($month = 1; $month <= 12; $month++) {
+                      // Первый день месяца
+                      $firstDay = date("N", strtotime("$year-$month-01"));
+
+                      // Общее количество дней в месяце
+                      $totalDays = date("t", strtotime("$year-$month-01"));
+
+                      // Название месяца
+                      $monthName = $monthNames[$month - 1];
+
+                      // Создание заголовка месяца
+                      $calendar3 .= '<td style="vertical-align: top; padding: 10px;"><table><tr><th colspan="7">' . $monthName . '</th></tr>';
+                      $calendar3 .= '<tr><th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Вс</th></tr>';
+
+                      $dayCounter = 1;
+
+                      // Заполнение пустых ячеек до первого дня месяца
+                      $calendar3 .= '<tr>';
+                      for ($i = 1; $i < $firstDay; $i++) {
+                          $calendar3 .= '<td></td>';
+                      }
+
+                      // Заполнение ячеек с датами
+                      while ($dayCounter <= $totalDays) {
+                          for ($i = $firstDay; $i <= 7; $i++) {
+                              if ($dayCounter > $totalDays) {
+                                  break;
+                              }
+
+                              // Добавление классов "current-day" и "booked-day"
+                              $class = '';
+                              if ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) {
+                                  $class .= 'current-day ';
+                              }
+                              if (in_array("$year-$month-$dayCounter", $bookedDates)) {
+                                  $class .= 'booked-day';
+                              }
+
+                              $calendar3 .= "<td class='$class'>$dayCounter</td>";
+                              $dayCounter++;
+                          }
+
+                          // Начать новую строку после каждой недели
+                          if ($dayCounter <= $totalDays) {
+                              $calendar3 .= '</tr><tr>';
+                          }
+
+                          // Сброс первого дня недели после окончания каждой недели
+                          $firstDay = 1;
+                      }
+
+                      $calendar3 .= '</tr></table></td>';
+
+                      // Добавить отступы между календарями
+                      if ($month == 6) {
+                          $calendar3 .= '</tr><tr style="height: 20px;"></tr><tr>';
+                      }
+                  }
+                  $calendar3 .= '</tr></table>';
+                  
+                  return $calendar3;
+              }
+
+              // Получение забронированных дат из базы данных
+              function getBookedDatesFromDatabase3()
+              {
+                  $bookedDates = array();
+
+                  $servername = "localhost";
+                  $username = "root";
+                  $password = "password";
+                  $dbname = "HOUSES";
+
+                  $conn = new mysqli($servername, $username, $password, $dbname);
+                  // Проверка соединения
+                  if ($conn->connect_error) {
+                      die("Ошибка подключения: " . $conn->connect_error);
+                  }
+                  // Запрос на получение забронированных дат
+                  $sql = "SELECT startDate, endDate FROM Spher_house";
+                  $result = $conn->query($sql);
+
+                  if ($result->num_rows > 0) {
+                      // Добавление забронированных дат в массив
+                      while ($row = $result->fetch_assoc()) {
+                          $startDate = $row["startDate"];
+                          $endDate = $row["endDate"];
+
+                          $start = new DateTime($startDate);
+                          $end = new DateTime($endDate);
+
+                          $interval = DateInterval::createFromDateString('1 day');
+                          $period = new DatePeriod($start, $interval, $end);
+
+                          foreach ($period as $date) {
+                              $bookedDates[] = $date->format("Y-m-d");
+                          }
+                      }
+                  }
+
+                  $conn->close();
+
+                  return $bookedDates;
+              }
+
+              // Текущий год
+              $currentYear = date('Y');
+
+              if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                  $servername = "localhost";
+                  $username = "root";
+                  $password = "password";
+                  $dbname = "HOUSES";
+
+                  $conn = new mysqli($servername, $username, $password, $dbname);
+                  // Проверка соединения
+                  if ($conn->connect_error) {
+                      die("Ошибка подключения: " . $conn->connect_error);
+                  }
+                  // Обработка формы бронирования
+                  if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
+                      $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
+                      $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
+                      // Запрос на добавление брони в базу данных
+                      $stmt = $conn->prepare("INSERT INTO Spher_house (startDate, endDate) VALUES (?, ?)");
+                      $stmt->bind_param("ss", $start_date, $end_date);
+                      if ($stmt->execute()) {
+                          // Редирект после успешного добавления бронирования
+                          header("Location: bron.php");
+                          exit();
+                      } else {
+                          echo "Ошибка при добавлении бронирования: " . $conn->error;
+                      }
+                      $conn->close();
+                  }
+              }
+
+              echo createCalendar3($currentYear, $getBookedDatesFromDatabase3);
+              ?>
+              </div>
+              <div class="event-form">
+                <h3>Бронирование</h3>
+                <form method="POST" action="">
+                  <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required>
+                  <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
+                  <button type="submit" id="add-event-btn">Забронировать</button>
+                </form>
+              </div>
       </div>
   
       <div class="text6">
@@ -190,6 +760,177 @@
               Для двух человек.
               Кухня - мини, холодильник - мини, душ - мини.
               Спальное место — макси.</p>
+              <button class="toggle-calendar-btn5">Открыть календарь</button>
+              <div class="calendar-container-5">
+              <button class="close-cal5" type="button">Закрыть</button>
+                <?php
+                function createCalendar4($year)
+                {
+                    // Создание таблицы календаря
+                    $calendar4 = '<table><tr>';
+
+                    $monthNames = array(
+                        'Январь', 'Февраль', 'Март', 'Апрель',
+                        'Май', 'Июнь', 'Июль', 'Август',
+                        'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+                    );
+
+                    $currentDay = date('j');
+                    $currentMonth = date('n');
+                    $currentYear = date('Y');
+
+                    // Получение забронированных дат из базы данных
+                    $bookedDates = getBookedDatesFromDatabase3();
+
+                    for ($month = 1; $month <= 12; $month++) {
+                        // Первый день месяца
+                        $firstDay = date("N", strtotime("$year-$month-01"));
+
+                        // Общее количество дней в месяце
+                        $totalDays = date("t", strtotime("$year-$month-01"));
+
+                        // Название месяца
+                        $monthName = $monthNames[$month - 1];
+
+                        // Создание заголовка месяца
+                        $calendar4 .= '<td style="vertical-align: top; padding: 10px;"><table><tr><th colspan="7">' . $monthName . '</th></tr>';
+                        $calendar4 .= '<tr><th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Вс</th></tr>';
+
+                        $dayCounter = 1;
+
+                        // Заполнение пустых ячеек до первого дня месяца
+                        $calendar4 .= '<tr>';
+                        for ($i = 1; $i < $firstDay; $i++) {
+                            $calendar4 .= '<td></td>';
+                        }
+
+                        // Заполнение ячеек с датами
+                        while ($dayCounter <= $totalDays) {
+                            for ($i = $firstDay; $i <= 7; $i++) {
+                                if ($dayCounter > $totalDays) {
+                                    break;
+                                }
+
+                                // Добавление классов "current-day" и "booked-day"
+                                $class = '';
+                                if ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) {
+                                    $class .= 'current-day ';
+                                }
+                                if (in_array("$year-$month-$dayCounter", $bookedDates)) {
+                                    $class .= 'booked-day';
+                                }
+
+                                $calendar4 .= "<td class='$class'>$dayCounter</td>";
+                                $dayCounter++;
+                            }
+
+                            // Начать новую строку после каждой недели
+                            if ($dayCounter <= $totalDays) {
+                                $calendar4 .= '</tr><tr>';
+                            }
+
+                            // Сброс первого дня недели после окончания каждой недели
+                            $firstDay = 1;
+                        }
+
+                        $calendar4 .= '</tr></table></td>';
+
+                        // Добавить отступы между календарями
+                        if ($month == 6) {
+                            $calendar4 .= '</tr><tr style="height: 20px;"></tr><tr>';
+                        }
+                    }
+                    $calendar4 .= '</tr></table>';
+                    
+                    return $calendar4;
+                }
+
+                // Получение забронированных дат из базы данных
+                function getBookedDatesFromDatabase4()
+                {
+                    $bookedDates = array();
+
+                    $servername = "localhost";
+                    $username = "root";
+                    $password = "password";
+                    $dbname = "HOUSES";
+
+                    $conn = new mysqli($servername, $username, $password, $dbname);
+                    // Проверка соединения
+                    if ($conn->connect_error) {
+                        die("Ошибка подключения: " . $conn->connect_error);
+                    }
+
+                    // Запрос на получение забронированных дат
+                    $sql = "SELECT startDate, endDate FROM Trail_house";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                        // Добавление забронированных дат в массив
+                        while ($row = $result->fetch_assoc()) {
+                            $startDate = $row["startDate"];
+                            $endDate = $row["endDate"];
+
+                            $start = new DateTime($startDate);
+                            $end = new DateTime($endDate);
+
+                            $interval = DateInterval::createFromDateString('1 day');
+                            $period = new DatePeriod($start, $interval, $end);
+
+                            foreach ($period as $date) {
+                                $bookedDates[] = $date->format("Y-m-d");
+                            }
+                        }
+                    }
+
+                    $conn->close();
+
+                    return $bookedDates;
+                }
+
+                // Текущий год
+                $currentYear = date('Y');
+
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    $servername = "localhost";
+                    $username = "root";
+                    $password = "password";
+                    $dbname = "HOUSES";
+
+                    $conn = new mysqli($servername, $username, $password, $dbname);
+                    // Проверка соединения
+                    if ($conn->connect_error) {
+                        die("Ошибка подключения: " . $conn->connect_error);
+                    }
+                    // Обработка формы бронирования
+                    if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
+                        $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
+                        $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
+                        // Запрос на добавление брони в базу данных
+                        $stmt = $conn->prepare("INSERT INTO Trail_house (startDate, endDate) VALUES (?, ?)");
+                        $stmt->bind_param("ss", $start_date, $end_date);
+                        if ($stmt->execute()) {
+                            // Редирект после успешного добавления бронирования
+                            header("Location: bron.php");
+                            exit();
+                        } else {
+                            echo "Ошибка при добавлении бронирования: " . $conn->error;
+                        }
+                        $conn->close();
+                    }
+                }
+
+                echo createCalendar4($currentYear, $getBookedDatesFromDatabase3);
+                ?>
+              </div>
+              <div class="event-form">
+                <h3>Бронирование</h3>
+                <form method="POST" action="">
+                  <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required>
+                  <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
+                  <button type="submit" id="add-event-btn">Забронировать</button>
+                </form>
+              </div>
       </div>
   
       <div class="text7">
