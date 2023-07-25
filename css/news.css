@@ -114,7 +114,32 @@ img.background {
 }
 
 .menu__link {
-    font-size: 1.3em;
+  font-size: 1.3em;
+  background-color: #061F70;
+  border-radius: 25px;
+  color: white;
+  padding: 7px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+.menu__link:hover{
+  transition: 0.3s ease-in-out;
+  background-color: #061F70;
+  border-radius: 25px;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1.35em;
+  margin: 4px 2px;
+  cursor: pointer;
+  opacity:0.8;
 }
 
 .psevdo_head{

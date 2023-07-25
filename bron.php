@@ -204,9 +204,44 @@
                 <form method="POST" action="">
                   <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required>
                   <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
-                  <button type="submit" id="add-event-btn">Забронировать</button>
+                  <button class="sub" type="submit" id="add-event-btn">Забронировать</button>
                 </form>
               </div>
+              <?php
+              // Подключение к базе данных
+              $servername = "localhost";
+              $username = "root";
+              $password = "password";
+              $dbname = "HOUSES";
+              $conn = new mysqli($servername, $username, $password, $dbname);
+              if ($conn->connect_error) {
+                die("Ошибка подключения к базе данных: " . $conn->connect_error);
+                }
+            
+            $sql = "SELECT Тариф, Описание FROM Marb_house";
+            $result = $conn->query($sql);
+                // Создание HTML-таблицы и отображение данных
+                if ($result->num_rows > 0) {
+                    echo "<table>
+                            <tr>
+                                <th>Тариф(В рублях)</th>
+                                
+                            </tr>";
+
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                                <td>" . $row["Тариф"] . "</td>
+                                <td>" . $row["Описание"] . "</td>
+                            </tr>";
+                    }
+
+                    echo "</table>";
+                } else {
+                    echo "Нет данных для отображения.";
+                }
+
+                $conn->close();
+                ?>
         </div>
   
       <div class="text3">
@@ -386,9 +421,44 @@
                 <form method="POST" action="">
                   <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required>
                   <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
-                  <button type="submit" id="add-event-btn">Забронировать</button>
+                  <button class="sub" type="submit" id="add-event-btn">Забронировать</button>
                 </form>
               </div>
+              <?php
+              // Подключение к базе данных
+              $servername = "localhost";
+              $username = "root";
+              $password = "password";
+              $dbname = "HOUSES";
+              $conn = new mysqli($servername, $username, $password, $dbname);
+              if ($conn->connect_error) {
+                die("Ошибка подключения к базе данных: " . $conn->connect_error);
+                }
+            
+            $sql = "SELECT Тариф, Описание FROM Proff_house";
+            $result = $conn->query($sql);
+                // Создание HTML-таблицы и отображение данных
+                if ($result->num_rows > 0) {
+                    echo "<table>
+                            <tr>
+                                <th>Тариф(Рублей/сутки)</th>
+                                
+                            </tr>";
+
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                                <td>" . $row["Тариф"] . "</td>
+                                <td>" . $row["Описание"] . "</td>
+                            </tr>";
+                    }
+
+                    echo "</table>";
+                } else {
+                    echo "Нет данных для отображения.";
+                }
+
+                $conn->close();
+                ?>
       </div>
   
       <div class="text4">
@@ -567,9 +637,43 @@
                 <form method="POST" action="">
                   <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required>
                   <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
-                  <button type="submit" id="add-event-btn">Забронировать</button>
+                  <button class="sub" type="submit" id="add-event-btn">Забронировать</button>
                 </form>
               </div>
+              <?php
+              // Подключение к базе данных
+              $servername = "localhost";
+              $username = "root";
+              $password = "password";
+              $dbname = "HOUSES";
+              $conn = new mysqli($servername, $username, $password, $dbname);
+              if ($conn->connect_error) {
+                die("Ошибка подключения к базе данных: " . $conn->connect_error);
+                }
+            $sql = "SELECT Тариф, Описание FROM U_vod_house";
+            $result = $conn->query($sql);
+                // Создание HTML-таблицы и отображение данных
+                if ($result->num_rows > 0) {
+                    echo "<table>
+                            <tr>
+                            <th>Тариф(Рублей/сутки)</th>
+                                
+                            </tr>";
+
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                                <td>" . $row["Тариф"] . "</td>
+                                <td>" . $row["Описание"] . "</td>
+                            </tr>";
+                    }
+
+                    echo "</table>";
+                } else {
+                    echo "Нет данных для отображения.";
+                }
+
+                $conn->close();
+                ?>
       </div>
   
       <div class="text5">
@@ -747,9 +851,43 @@
                 <form method="POST" action="">
                   <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required>
                   <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
-                  <button type="submit" id="add-event-btn">Забронировать</button>
+                  <button class="sub" type="submit" id="add-event-btn">Забронировать</button>
                 </form>
               </div>
+              <?php
+              // Подключение к базе данных
+              $servername = "localhost";
+              $username = "root";
+              $password = "password";
+              $dbname = "HOUSES";
+              $conn = new mysqli($servername, $username, $password, $dbname);
+              if ($conn->connect_error) {
+                die("Ошибка подключения к базе данных: " . $conn->connect_error);
+                }
+            $sql = "SELECT Тариф, Описание FROM Spher_house";
+            $result = $conn->query($sql);
+                // Создание HTML-таблицы и отображение данных
+                if ($result->num_rows > 0) {
+                    echo "<table>
+                            <tr>
+                            <th>Тариф(Рублей/сутки)</th>
+                                
+                            </tr>";
+
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                                <td>" . $row["Тариф"] . "</td>
+                                <td>" . $row["Описание"] . "</td>
+                            </tr>";
+                    }
+
+                    echo "</table>";
+                } else {
+                    echo "Нет данных для отображения.";
+                }
+
+                $conn->close();
+                ?>
       </div>
   
       <div class="text6">
@@ -927,9 +1065,43 @@
                 <form method="POST" action="">
                   <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required>
                   <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
-                  <button type="submit" id="add-event-btn">Забронировать</button>
+                  <button class="sub" type="submit" id="add-event-btn">Забронировать</button>
                 </form>
               </div>
+              <?php
+              // Подключение к базе данных
+              $servername = "localhost";
+              $username = "root";
+              $password = "password";
+              $dbname = "HOUSES";
+              $conn = new mysqli($servername, $username, $password, $dbname);
+              if ($conn->connect_error) {
+                die("Ошибка подключения к базе данных: " . $conn->connect_error);
+                }
+            $sql = "SELECT Тариф, Описание FROM Trail_house";
+            $result = $conn->query($sql);
+                // Создание HTML-таблицы и отображение данных
+                if ($result->num_rows > 0) {
+                    echo "<table>
+                            <tr>
+                            <th>Тариф(Рублей/сутки)</th>
+                                
+                            </tr>";
+
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                                <td>" . $row["Тариф"] . "</td>
+                                <td>" . $row["Описание"] . "</td>
+                            </tr>";
+                    }
+
+                    echo "</table>";
+                } else {
+                    echo "Нет данных для отображения.";
+                }
+
+                $conn->close();
+                ?>
       </div>
   
       <div class="text7">
