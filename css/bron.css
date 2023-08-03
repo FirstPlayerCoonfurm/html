@@ -14,11 +14,11 @@ h2{
     color: #6A7300;
 }
 em{
-    font-size: 1em;
+    font-size: 1.4em;
     color: #000;
 }
 p{
-    font-size: 1em;
+    font-size: 1.3em;
     color: #000;
 }
 
@@ -291,18 +291,23 @@ img.background {
 }
 
 .toggle-calendar-btn1.hidden {
+    transition: 0.3s ease-in-out;
     display: none;
 }
 .toggle-calendar-btn2.hidden {
+    transition: 0.3s ease-in-out;
     display: none;
 }
 .toggle-calendar-btn3.hidden {
+    transition: 0.3s ease-in-out;
     display: none;
 }
 .toggle-calendar-btn4.hidden {
+    transition: 0.3s ease-in-out;
     display: none;
 }
 .toggle-calendar-btn5.hidden {
+    transition: 0.3s ease-in-out;
     display: none;
 }
 
@@ -418,26 +423,30 @@ img.background {
     height: 0;
     opacity: 0;
     overflow: hidden;
-    transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 .calendar-container-1.show {
+    transition: 1s ease-in-out;
     height: auto;
     opacity: 1;
 }
 .calendar-container-2.show {
+    transition: 1s ease-in-out;
     height: auto;
     opacity: 1;
 }
 .calendar-container-3.show {
+    transition: 1s ease-in-out;
     height: auto;
     opacity: 1;
 }
 .calendar-container-4.show {
+    transition: 1s ease-in-out;
     height: auto;
     opacity: 1;
 }
 .calendar-container-5.show {
+    transition: 1s ease-in-out;
     height: auto;
     opacity: 1;
 }
@@ -520,4 +529,41 @@ img.background {
       left: 10%;
       width: 85vw;
     }
-  }
+}
+
+@media (max-width: 350px){
+    .burger{
+        display: block;
+        width: 40px;
+        height: 40px;
+        border: none;
+        left: 15px;
+    }
+    .menu {
+        position: absolute;
+        left: -390px;
+        top: 0;
+        width: 350px;
+        background-color: #061F70;
+        padding: 75px 20px 20px 20px;
+        transition: transform .5s;
+        z-index: 1;
+    }
+    .menu__list {
+        display: block;
+    }
+    .menu__link {
+        color: white;
+        font-size: 21px;
+        display: block;
+        padding: 10px 0;
+    }
+    header.open .menu{
+        transform: translateX(100%);
+    }
+    .content{
+      position: relative;
+      left: 10%;
+      width: 85vw;
+    }
+}
