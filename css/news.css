@@ -85,7 +85,7 @@ img.background {
 .menu {
   position: absolute;
   top: 10px;
-  left: 65%;
+  right: 2%;;
   transform: translateX(-2%);
   display: inline-block;
   border: 2px;
@@ -129,15 +129,7 @@ img.background {
 
 .menu__link:hover{
   transition: 0.3s ease-in-out;
-  background-color: #061F70;
-  border-radius: 25px;
-  color: white;
-  padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
   font-size: 1.35em;
-  margin: 4px 2px;
   cursor: pointer;
   opacity:0.8;
 }
@@ -180,71 +172,70 @@ p{
 }
 
 .text{
+  width: auto;
   padding: 15px;
   background:rgba(255,255,255,0.4);
   border-radius: 1.5rem;
-}
-.video1{
-  padding: 0 10rem;
 }
 .text1{
+  width: auto;
   padding: 15px;
   background:rgba(255,255,255,0.4);
   border-radius: 1.5rem;
 }
-.video2{
-  padding: 0 10rem;
-}
 .text2{
+  width: auto;
   padding: 15px;
   background:rgba(255,255,255,0.4);
   border-radius: 1.5rem;
 }
 .text3{
+  width: auto;
   padding: 15px;
   background:rgba(255,255,255,0.4);
   border-radius: 1.5rem;
 }
 .text4{
+  width: auto;
   padding: 15px;
   background:rgba(255,255,255,0.4);
   border-radius: 1.5rem;
 }
 .text5{
+  width: auto;
   padding: 15px;
-  width: 40rem;
   background:rgba(255,255,255,0.4);
   border-radius: 1.5rem;
 }
 .text6{
+  width: auto;
   padding: 15px;
-  width: 40rem;
   background:rgba(255,255,255,0.4);
   border-radius: 1.5rem;
 }
 
 .img1{
-  width: 50em;
-  height: 40em;
+  width: 90%;
+  height: 40%;
   border-radius: 5px;
   padding: 0;
 }
 
 .img2{
-  width: 30em;
-  height: 50em;
+  width: 55%;
+  height: 90%;
   border-radius: 5px;
   padding: 0;
 }
 
 .img3{
-  width: 30em;
-  height: 50em;
+  width: 55%;
+  height: 90%;
   border-radius: 5px;
   padding: 0;
 }
 
-@media (max-width: 1024px){
+@media (max-width: 1250px){
   .burger{
       display: block;
       width: 40px;
@@ -277,11 +268,11 @@ p{
 
   .lefttext{
     text-align: center;
-    width: 30rem;
+    width: auto;
   }
 
   .text{
-    width: 25em;
+    width: auto;
   }
   .video1{
     padding: 0;
@@ -289,7 +280,7 @@ p{
     height: 15em;
   }
   .text1{
-    width: 25em;
+    width: auto;
   }
   .video2{
     padding: 0;
@@ -297,30 +288,84 @@ p{
     height: 15em;
   }
   .text2{
-    width: 25em;
+    width: auto;
   }
   .text3{
-    width: 25em;
+    width: auto;
   }
   .text4{
-    width: 25em;
+    width: auto;
   }
   .text5{
-    width: 25em;
+    width: auto;
   }
   .text6{
-    width: 25em;
+    width: auto;
   }
   .img1{
-    width: 27em;
-    height: 25em;
+    width: 90%;
+    height: 40%;
   }
   .img2{
-    width: 20em;
-    height: 35em;
+    width: 55%;
+    height: 90%;
   }
   .img3{
+    width: 55%;
+    height: 90%;
+  }
+}
+
+@media (max-width: 850px){
+  .burger{
+      display: block;
+      width: 40px;
+      height: 40px;
+      border: none;
+      left: 15px;
+  }
+  .menu {
+      position: absolute;
+      left: -390px;
+      top: 0;
+      width: 350px;
+      background-color: #061F70;
+      padding: 75px 20px 20px 20px;
+      transition: transform .5s;
+      z-index: 1;
+  }
+  .menu__list {
+      display: block;
+  }
+  .menu__link {
+      color: white;
+      font-size: 21px;
+      display: block;
+      padding: 10px 0;
+  }
+  header.open .menu{
+      transform: translateX(100%);
+  }
+  .video1{
+    padding: 0;
     width: 25em;
-    height: 30em;
+    height: 15em;
+  }
+  .video2{
+    padding: 0;
+    width: 25em;
+    height: 15em;
+  }
+  .img1{
+    width: 90%;
+    height: 40%;
+  }
+  .img2{
+    width: 55%;
+    height: 90%;
+  }
+  .img3{
+    width: 55%;
+    height: 90%;
   }
 }

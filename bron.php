@@ -308,8 +308,8 @@
                   $bookedDates = array();
 
                   $servername = "localhost";
-                  $username = "root";
-                  $password = "password";
+                  $username = "user";
+                  $password = "_piramida_";
                   $dbname = "HOUSES";
 
                   $conn = new mysqli($servername, $username, $password, $dbname);
@@ -349,9 +349,9 @@
               $currentYear = date('Y');
 
               if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                  $servername = "localhost";
-                  $username = "root";
-                  $password = "password";
+                $servername = "localhost";
+                $username = "user";
+                $password = "_piramida_";
                   $dbname = "HOUSES";
 
                   $conn = new mysqli($servername, $username, $password, $dbname);
@@ -489,8 +489,8 @@
                   $bookedDates = array();
 
                   $servername = "localhost";
-                  $username = "root";
-                  $password = "password";
+                  $username = "user";
+                  $password = "_piramida_";
                   $dbname = "HOUSES";
 
                   $conn = new mysqli($servername, $username, $password, $dbname);
@@ -530,9 +530,9 @@
               $currentYear = date('Y');
 
               if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                  $servername = "localhost";
-                  $username = "root";
-                  $password = "password";
+                $servername = "localhost";
+                $username = "user";
+                $password = "_piramida_";
                   $dbname = "HOUSES";
 
                   $conn = new mysqli($servername, $username, $password, $dbname);
@@ -670,8 +670,8 @@
                   $bookedDates = array();
 
                   $servername = "localhost";
-                  $username = "root";
-                  $password = "password";
+                  $username = "user";
+                  $password = "_piramida_";
                   $dbname = "HOUSES";
 
                   $conn = new mysqli($servername, $username, $password, $dbname);
@@ -710,9 +710,9 @@
               $currentYear = date('Y');
 
               if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                  $servername = "localhost";
-                  $username = "root";
-                  $password = "password";
+                $servername = "localhost";
+                $username = "user";
+                $password = "_piramida_";
                   $dbname = "HOUSES";
 
                   $conn = new mysqli($servername, $username, $password, $dbname);
@@ -849,8 +849,8 @@
                     $bookedDates = array();
 
                     $servername = "localhost";
-                    $username = "root";
-                    $password = "password";
+                  $username = "user";
+                  $password = "_piramida_";
                     $dbname = "HOUSES";
 
                     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -891,8 +891,8 @@
 
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $servername = "localhost";
-                    $username = "root";
-                    $password = "password";
+                  $username = "user";
+                  $password = "_piramida_";
                     $dbname = "HOUSES";
 
                     $conn = new mysqli($servername, $username, $password, $dbname);

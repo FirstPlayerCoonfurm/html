@@ -105,13 +105,13 @@ img.background {
 .menu {
     position: absolute;
     top: 10px;
-    left: 65%;
+    right: 2%;;
     transform: translateX(-2%);
     display: inline-block;
     border: 2px;
     border-radius: 25px;
     animation: slide-in 1s ease-out;
-}
+  }
 
 .logo {
     display: block;
@@ -149,15 +149,7 @@ img.background {
 
 .menu__link:hover{
     transition: 0.3s ease-in-out;
-    background-color: #061F70;
-    border-radius: 25px;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
     font-size: 1.35em;
-    margin: 4px 2px;
     cursor: pointer;
     opacity:0.8;
 }
@@ -417,12 +409,11 @@ img.background {
 .calendar-container-4,
 .calendar-container-5 {
     max-width: 100%;
-    overflow-x: auto;
+    overflow: auto;
     background-color: #ffffff5e;
     border-radius: 25px;
     height: 0;
     opacity: 0;
-    overflow: hidden;
 }
 
 .calendar-container-1.show {

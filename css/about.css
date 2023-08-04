@@ -102,15 +102,15 @@ img.background {
 }
 
 .menu {
-  position: absolute;
-  top: 10px;
-  left: 65%;
-  transform: translateX(-2%);
-  display: inline-block;
-  border: 2px;
-  border-radius: 25px;
-  animation: slide-in 1s ease-out;
-}
+    position: absolute;
+    top: 10px;
+    right: 2%;;
+    transform: translateX(-2%);
+    display: inline-block;
+    border: 2px;
+    border-radius: 25px;
+    animation: slide-in 1s ease-out;
+  }
 
 .logo {
     display: block;
@@ -141,22 +141,14 @@ img.background {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    margin: 4px 2px;
+    margin: 4px 0;
     cursor: pointer;
     opacity: 0.4;
 }
 
 .menu__link:hover{
     transition: 0.3s ease-in-out;
-    background-color: #061F70;
-    border-radius: 25px;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
     font-size: 1.35em;
-    margin: 4px 2px;
     cursor: pointer;
     opacity:0.8;
 }
@@ -169,7 +161,7 @@ img.background {
     padding: 0;
 }
 .slider{
-    width: 55%;
+    width: 50%;
     height: 65%;
     overflow: hidden;
     border: 5px;
@@ -230,23 +222,16 @@ input[name="f"]{
 #f4:checked ~ .s1 {
     margin-left: -75%;
 }
-.center-left {
-    position: absolute;
-    top: 50%;
-    left: 17%;
-    transform: translate(-30%, -10%);
-    color: #fff;
-}
 .button{
     background-color: #061F70;
     border-radius: 25px;
     color: white;
-    padding: 15px 32px;
+    padding: 15px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 1vw;
-    margin: 4px 2px;
+    font-size: 0.8rem;
+    margin: 1px 1px;
     cursor: pointer;
     opacity: 0.4;
 }
@@ -254,12 +239,12 @@ input[name="f"]{
     background-color: #061F70;
     border-radius: 25px;
     color: white;
-    padding: 15px 32px;
+    padding: 15px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 1vw;
-    margin: 4px 2px;
+    font-size: 0.8rem;
+    margin: 1px 1px;
     cursor: pointer;
     opacity:0.8;
 }
@@ -306,7 +291,7 @@ input[name="f"]{
     max-width: 100%;
 }
 
-@media (max-width: 1024px){
+@media (max-width: 1250px){
     .burger{
         display: block;
         width: 40px;
@@ -337,12 +322,6 @@ input[name="f"]{
         transform: translateX(100%);
     }
 
-    .center-left {
-        position: absolute;
-        top: 50%;
-        left: 17%;
-    }
-
     .slider{
         width: 55%;
         height: 55%;
@@ -354,7 +333,7 @@ input[name="f"]{
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(3, 1fr);
-        top: 175%;
+        top: 180%;
         gap: 10px;
     }
     .slider_other_1{
@@ -371,5 +350,45 @@ input[name="f"]{
     }
     .slider_other_5{
         padding: 5px;
+    }
+}
+
+@media (max-width: 850px){
+    .img{
+        height: 13rem;
+        width: 17rem;
+        border-radius: 25px;
+        border: 0.5px solid transparent;
+    }
+    h1{
+        font-size: 1.5em;
+    }
+    h5{
+        font-size: 1.15em;
+    }
+    h3{
+        font-size: 1.35em;
+        color: #4a76f0;
+    }
+    p{
+        font-size: 1.2rem;
+    }
+    a{
+        font-size: 1em;
+    }
+
+    .slider{
+        width: 55%;
+        height: 30%;
+        overflow: hidden;
+        border: 5px;
+    }
+
+    .relax{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, 1fr);
+        top: 190%;
+        left: 45%;
     }
 }
