@@ -57,6 +57,7 @@
 
                   // Получение забронированных дат из базы данных
                   $bookedDates = getBookedDatesFromDatabase();
+                  print_r($bookedDates);
 
                   for ($month = 1; $month <= 12; $month++) {
                       // Первый день месяца
@@ -124,8 +125,6 @@
               // Получение забронированных дат из базы данных
               function getBookedDatesFromDatabase()
               {
-                  $bookedDates = array();
-
                   $servername = "localhost";
                   $username = "user";
                   $password = "_piramida_";
@@ -150,11 +149,12 @@
                           $start = new DateTime($startDate);
                           $end = new DateTime($endDate);
 
-                          $interval = DateInterval::createFromDateString('1 day');
+                          $interval = new DateInterval('P1D');
                           $period = new DatePeriod($start, $interval, $end);
 
                           foreach ($period as $date) {
-                              $bookedDates[] = $date->format("Y-m-d");
+                              $bookedDates = array("booked_day" => $date->format("d-m-Y"));
+                              //print_r($bookedDates);
                           }
                       }
                   }

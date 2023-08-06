@@ -402,6 +402,9 @@ img.background {
 .current-day {
     background-color: lightgreen;
 }
+.booked-day{
+    background-color: lightcoral;
+}
 
 .calendar-container-1,
 .calendar-container-2,
