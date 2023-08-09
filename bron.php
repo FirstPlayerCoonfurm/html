@@ -56,8 +56,10 @@
                   $currentYear = date('Y');
 
                   // Получение забронированных дат из базы данных
-                  $bookedDates = getBookedDatesFromDatabase();
-                  print_r($bookedDates);
+                  $bookedDates = array();
+                  if($bookedDates == null){
+                    $bookedDates = getBookedDatesFromDatabase();
+                }
 
                   for ($month = 1; $month <= 12; $month++) {
                       // Первый день месяца
@@ -93,9 +95,9 @@
                               if ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) {
                                   $class .= 'current-day ';
                               }
-                              if (in_array("$year-$month-$dayCounter", $bookedDates)) {
-                                  $class .= 'booked-day';
-                              }
+
+                              $isBooked = in_array("$year-$month-$dayCounter", $bookedDates);
+                              $class .= $isBooked ? 'booked-day' : '';
 
                               $calendar .= "<td class='$class'>$dayCounter</td>";
                               $dayCounter++;
@@ -125,6 +127,7 @@
               // Получение забронированных дат из базы данных
               function getBookedDatesFromDatabase()
               {
+                $bookedDates = array();
                   $servername = "localhost";
                   $username = "user";
                   $password = "_piramida_";
@@ -153,8 +156,7 @@
                           $period = new DatePeriod($start, $interval, $end);
 
                           foreach ($period as $date) {
-                              $bookedDates = array("booked_day" => $date->format("d-m-Y"));
-                              //print_r($bookedDates);
+                            $bookedDates[] = $date->format("Y-n-j");
                           }
                       }
                   }
@@ -237,7 +239,10 @@
                   $currentYear = date('Y');
 
                   // Получение забронированных дат из базы данных
-                  $bookedDates = getBookedDatesFromDatabase1();
+                  $bookedDates = array();
+                  if($bookedDates == null){
+                    $bookedDates = getBookedDatesFromDatabase1();
+                }
 
                   for ($month = 1; $month <= 12; $month++) {
                       // Первый день месяца
@@ -273,9 +278,8 @@
                               if ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) {
                                   $class .= 'current-day ';
                               }
-                              if (in_array("$year-$month-$dayCounter", $bookedDates)) {
-                                  $class .= 'booked-day';
-                              }
+                              $isBooked = in_array("$year-$month-$dayCounter", $bookedDates);
+                              $class .= $isBooked ? 'booked-day' : '';
 
                               $calendar1 .= "<td class='$class'>$dayCounter</td>";
                               $dayCounter++;
@@ -335,7 +339,7 @@
                           $period = new DatePeriod($start, $interval, $end);
 
                           foreach ($period as $date) {
-                              $bookedDates[] = $date->format("Y-m-d");
+                            $bookedDates[] = $date->format("Y-n-j");
                           }
                       }
                   }
@@ -417,8 +421,10 @@
                   $currentMonth = date('n');
                   $currentYear = date('Y');
 
-                  // Получение забронированных дат из базы данных
-                  $bookedDates = getBookedDatesFromDatabase2();
+                  $bookedDates = array();
+                  if($bookedDates == null){
+                    $bookedDates = getBookedDatesFromDatabase2();
+                }
 
                   for ($month = 1; $month <= 12; $month++) {
                       // Первый день месяца
@@ -454,9 +460,8 @@
                               if ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) {
                                   $class .= 'current-day ';
                               }
-                              if (in_array("$year-$month-$dayCounter", $bookedDates)) {
-                                  $class .= 'booked-day';
-                              }
+                              $isBooked = in_array("$year-$month-$dayCounter", $bookedDates);
+                              $class .= $isBooked ? 'booked-day' : '';
 
                               $calendar2 .= "<td class='$class'>$dayCounter</td>";
                               $dayCounter++;
@@ -516,7 +521,7 @@
                           $period = new DatePeriod($start, $interval, $end);
 
                           foreach ($period as $date) {
-                              $bookedDates[] = $date->format("Y-m-d");
+                            $bookedDates[] = $date->format("Y-n-j");
                           }
                       }
                   }
@@ -598,8 +603,10 @@
                   $currentMonth = date('n');
                   $currentYear = date('Y');
 
-                  // Получение забронированных дат из базы данных
-                  $bookedDates = getBookedDatesFromDatabase3();
+                  $bookedDates = array();
+                  if($bookedDates == null){
+                    $bookedDates = getBookedDatesFromDatabase3();
+                }
 
                   for ($month = 1; $month <= 12; $month++) {
                       // Первый день месяца
@@ -635,9 +642,8 @@
                               if ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) {
                                   $class .= 'current-day ';
                               }
-                              if (in_array("$year-$month-$dayCounter", $bookedDates)) {
-                                  $class .= 'booked-day';
-                              }
+                              $isBooked = in_array("$year-$month-$dayCounter", $bookedDates);
+                              $class .= $isBooked ? 'booked-day' : '';
 
                               $calendar3 .= "<td class='$class'>$dayCounter</td>";
                               $dayCounter++;
@@ -696,7 +702,7 @@
                           $period = new DatePeriod($start, $interval, $end);
 
                           foreach ($period as $date) {
-                              $bookedDates[] = $date->format("Y-m-d");
+                            $bookedDates[] = $date->format("Y-n-j");
                           }
                       }
                   }
@@ -777,8 +783,10 @@
                     $currentMonth = date('n');
                     $currentYear = date('Y');
 
-                    // Получение забронированных дат из базы данных
-                    $bookedDates = getBookedDatesFromDatabase3();
+                    $bookedDates = array();
+                  if($bookedDates == null){
+                    $bookedDates = getBookedDatesFromDatabase4();
+                }
 
                     for ($month = 1; $month <= 12; $month++) {
                         // Первый день месяца
@@ -814,9 +822,8 @@
                                 if ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) {
                                     $class .= 'current-day ';
                                 }
-                                if (in_array("$year-$month-$dayCounter", $bookedDates)) {
-                                    $class .= 'booked-day';
-                                }
+                                $isBooked = in_array("$year-$month-$dayCounter", $bookedDates);
+                                $class .= $isBooked ? 'booked-day' : '';
 
                                 $calendar4 .= "<td class='$class'>$dayCounter</td>";
                                 $dayCounter++;
@@ -876,8 +883,8 @@
                             $period = new DatePeriod($start, $interval, $end);
 
                             foreach ($period as $date) {
-                                $bookedDates[] = $date->format("Y-m-d");
-                            }
+                                $bookedDates[] = $date->format("Y-n-j");
+                              }
                         }
                     }
 

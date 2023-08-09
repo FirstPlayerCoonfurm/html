@@ -148,7 +148,7 @@ img.background {
 }
 
 .menu__link:hover{
-    transition: 0.3s ease-in-out;
+    transition: 0.35s ease-in-out;
     font-size: 1.35em;
     cursor: pointer;
     opacity:0.8;
