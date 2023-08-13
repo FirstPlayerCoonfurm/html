@@ -177,9 +177,9 @@
               //$mail->Port = 465;
               //$mail->SMTPSecure = 'ssl';
               //$mail->SMTPAuth = true;
-              //$mail->Username = '2003ivandrozdov@gmail.com';
-              //$mail->Password = 'oocslmrucwzgyspf';
-              //$mail->setFrom('2003ivandrozdov@gmail.com', 'Иван');
+              //$mail->Username = '@gmail.com';
+              //$mail->Password = '';
+              //$mail->setFrom('@gmail.com', 'Иван');
               //$mail->addAddress($_POST['email'], $_POST['full_name']);
               //$mail->Subject = 'Новое бронирование';
               //$mail->isHTML(true);
