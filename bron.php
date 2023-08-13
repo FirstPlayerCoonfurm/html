@@ -19,7 +19,7 @@
                     <li class="menu__item"><a class="menu__link" href="index.html">Главная</a></li>
                     <li class="menu__item"><a class="menu__link" href="about.html">О нас</a></li>
                     <li class="menu__item"><a class="menu__link" href="news.html">Новости</a></li>
-                    <li class="menu__item"><a class="menu__link" href="bron.html">Бронирование</a></li>
+                    <li class="menu__item"><a class="menu__link" href="bron.php">Бронирование</a></li>
                 </ul>
             </nav>
           </div>
@@ -140,12 +140,12 @@
                   }
 
                   // Запрос на получение забронированных дат
-                  $sql = "SELECT startDate, endDate FROM Marb_house";
-                  $result = $conn->query($sql);
+                  $sql_marb = "SELECT startDate, endDate FROM Marb_house";
+                  $result_marb = $conn->query($sql_marb);
 
-                  if ($result->num_rows > 0) {
+                  if ($result_marb->num_rows > 0) {
                       // Добавление забронированных дат в массив
-                      while ($row = $result->fetch_assoc()) {
+                      while ($row = $result_marb->fetch_assoc()) {
                           $startDate = $row["startDate"];
                           $endDate = $row["endDate"];
 
@@ -168,46 +168,46 @@
               // Текущий год
               $currentYear = date('Y');
 
-              if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                  $servername = "localhost";
-                  $username = "user";
-                  $password = "_piramida_";
-                  $dbname = "HOUSES";
-
-                  $conn = new mysqli($servername, $username, $password, $dbname);
-                  // Проверка соединения
-                  if ($conn->connect_error) {
-                      die("Ошибка подключения: " . $conn->connect_error);
-                  }
-                  // Обработка формы бронирования
-                  if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
-                      $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
-                      $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
-                      // Запрос на добавление брони в базу данных
-                      $stmt = $conn->prepare("INSERT INTO Marb_house (startDate, endDate) VALUES (?, ?)");
-                      $stmt->bind_param("ss", $start_date, $end_date);
-                      if ($stmt->execute()) {
-                          // Редирект после успешного добавления бронирования
-                          header("Location: bron.php");
-                          exit();
-                      } else {
-                          echo "Ошибка при добавлении бронирования: " . $conn->error;
-                      }
-                      $conn->close();
-                  }
-              }
-
+              //use PHPMailer\PHPMailer\PHPMailer;
+              //use PHPMailer\PHPMailer\Exception;
+              //require '/vendor/phpmailer/phpmailer/src/PHPMailer.php';
+              //require '/vendor/phpmailer/phpmailer/src/Exception.php';
+              //$mail->isSMTP();
+              //$mail->Host = 'smtp.gmail.com';
+              //$mail->Port = 465;
+              //$mail->SMTPSecure = 'ssl';
+              //$mail->SMTPAuth = true;
+              //$mail->Username = '2003ivandrozdov@gmail.com';
+              //$mail->Password = 'oocslmrucwzgyspf';
+              //$mail->setFrom('2003ivandrozdov@gmail.com', 'Иван');
+              //$mail->addAddress($_POST['email'], $_POST['full_name']);
+              //$mail->Subject = 'Новое бронирование';
+              //$mail->isHTML(true);
+              //$mail->Body = '
+              //<h3>Форма бронирования</h3>
+              //<p>ФИО: ' . $_POST['full_name'] . '</p>
+              //<p>Email: ' . $_POST['email'] . '</p>
+              //<p>Start Date: ' . $_POST['start_date'] . '</p>
+              //<p>End Date: ' . $_POST['end_date'] . '</p>';
+              //if ($mail->send()) {
+                //echo 'Email sent successfully';
+            //} else {
+                //echo 'Email could not be sent: ' . $mail->ErrorInfo;
+            //}
+                
               echo createCalendar($currentYear);
               ?>
               </div>
               <div class="event-form">
-                <h3>Бронирование</h3>
+                <h3>Форма бронирования</h3>
                 <form method="POST" action="">
-                  <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required>
-                  <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
-                  <button class="sub" type="submit" id="add-event-btn">Забронировать</button>
+                    <input type="text" name="full_name" id="full-name" placeholder="ФИО" required>
+                    <input type="email" name="email" id="email" placeholder="Email" required>
+                    <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required> 
+                    <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
+                    <button class="sub" type="submit" id="add-event-btn">Забронировать</button>
                 </form>
-              </div>
+            </div>
         </div>
   
       <div class="text3">
@@ -239,9 +239,9 @@
                   $currentYear = date('Y');
 
                   // Получение забронированных дат из базы данных
-                  $bookedDates = array();
-                  if($bookedDates == null){
-                    $bookedDates = getBookedDatesFromDatabase1();
+                  $bookedDates1 = array();
+                  if($bookedDates1 == null){
+                    $bookedDates1 = getBookedDatesFromDatabase1();
                 }
 
                   for ($month = 1; $month <= 12; $month++) {
@@ -278,7 +278,7 @@
                               if ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) {
                                   $class .= 'current-day ';
                               }
-                              $isBooked = in_array("$year-$month-$dayCounter", $bookedDates);
+                              $isBooked = in_array("$year-$month-$dayCounter", $bookedDates1);
                               $class .= $isBooked ? 'booked-day' : '';
 
                               $calendar1 .= "<td class='$class'>$dayCounter</td>";
@@ -309,7 +309,7 @@
               // Получение забронированных дат из базы данных
               function getBookedDatesFromDatabase1()
               {
-                  $bookedDates = array();
+                  $bookedDates1 = array();
 
                   $servername = "localhost";
                   $username = "user";
@@ -323,30 +323,30 @@
                   }
 
                   // Запрос на получение забронированных дат
-                  $sql = "SELECT startDate, endDate FROM Proff_house";
-                  $result = $conn->query($sql);
+                  $sql_proff = "SELECT startDate, endDate FROM Proff_house";
+                  $result_proff = $conn->query($sql_proff);
 
-                  if ($result->num_rows > 0) {
+                  if ($result_proff->num_rows > 0) {
                       // Добавление забронированных дат в массив
-                      while ($row = $result->fetch_assoc()) {
+                      while ($row = $result_proff->fetch_assoc()) {
                           $startDate = $row["startDate"];
                           $endDate = $row["endDate"];
 
                           $start = new DateTime($startDate);
                           $end = new DateTime($endDate);
 
-                          $interval = DateInterval::createFromDateString('1 day');
+                          $interval = new DateInterval('P1D');
                           $period = new DatePeriod($start, $interval, $end);
 
                           foreach ($period as $date) {
-                            $bookedDates[] = $date->format("Y-n-j");
+                            $bookedDates1[] = $date->format("Y-n-j");
                           }
                       }
                   }
 
                   $conn->close();
 
-                  return $bookedDates;
+                  return $bookedDates1;
               }
 
               // Текущий год
@@ -364,13 +364,13 @@
                       die("Ошибка подключения: " . $conn->connect_error);
                   }
                   // Обработка формы бронирования
-                  if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
-                      $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
-                      $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
+                  if (isset($_POST['start_date1']) && isset($_POST['end_date1'])) {
+                      $start_date = mysqli_real_escape_string($conn, $_POST['start_date1']);
+                      $end_date = mysqli_real_escape_string($conn, $_POST['end_date1']);
                       // Запрос на добавление брони в базу данных
-                      $stmt = $conn->prepare("INSERT INTO Proff_house (startDate, endDate) VALUES (?, ?)");
-                      $stmt->bind_param("ss", $start_date, $end_date);
-                      if ($stmt->execute()) {
+                      $stmt_proff = $conn->prepare("INSERT INTO Proff_house (startDate, endDate) VALUES (?, ?)");
+                      $stmt_proff->bind_param("ss", $start_date, $end_date);
+                      if ($stmt_proff->execute()) {
                           // Редирект после успешного добавления бронирования
                           header("Location: bron.php");
                           exit();
@@ -380,15 +380,14 @@
                       $conn->close();
                   }
               }
-
               echo createCalendar1($currentYear, $getBookedDatesFromDatabase1);
               ?>
               </div>
               <div class="event-form">
                 <h3>Бронирование</h3>
                 <form method="POST" action="">
-                  <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required>
-                  <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
+                  <input type="date" name="start_date1" id="event-start-date" placeholder="Start Date" required>
+                  <input type="date" name="end_date1" id="event-end-date" placeholder="End Date" required>
                   <button class="sub" type="submit" id="add-event-btn">Забронировать</button>
                 </form>
               </div>
@@ -421,9 +420,9 @@
                   $currentMonth = date('n');
                   $currentYear = date('Y');
 
-                  $bookedDates = array();
-                  if($bookedDates == null){
-                    $bookedDates = getBookedDatesFromDatabase2();
+                  $bookedDates2 = array();
+                  if($bookedDates2 == null){
+                    $bookedDates2 = getBookedDatesFromDatabase2();
                 }
 
                   for ($month = 1; $month <= 12; $month++) {
@@ -460,7 +459,7 @@
                               if ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) {
                                   $class .= 'current-day ';
                               }
-                              $isBooked = in_array("$year-$month-$dayCounter", $bookedDates);
+                              $isBooked = in_array("$year-$month-$dayCounter", $bookedDates2);
                               $class .= $isBooked ? 'booked-day' : '';
 
                               $calendar2 .= "<td class='$class'>$dayCounter</td>";
@@ -491,7 +490,7 @@
               // Получение забронированных дат из базы данных
               function getBookedDatesFromDatabase2()
               {
-                  $bookedDates = array();
+                  $bookedDates2 = array();
 
                   $servername = "localhost";
                   $username = "user";
@@ -505,8 +504,8 @@
                   }
 
                   // Запрос на получение забронированных дат
-                  $sql = "SELECT startDate, endDate FROM U_vod_house";
-                  $result = $conn->query($sql);
+                  $sql_u_vod = "SELECT startDate, endDate FROM U_vod_house";
+                  $result = $conn->query($sql_u_vod);
 
                   if ($result->num_rows > 0) {
                       // Добавление забронированных дат в массив
@@ -517,18 +516,18 @@
                           $start = new DateTime($startDate);
                           $end = new DateTime($endDate);
 
-                          $interval = DateInterval::createFromDateString('1 day');
+                          $interval = new DateInterval('P1D');
                           $period = new DatePeriod($start, $interval, $end);
 
                           foreach ($period as $date) {
-                            $bookedDates[] = $date->format("Y-n-j");
+                            $bookedDates2[] = $date->format("Y-n-j");
                           }
                       }
                   }
 
                   $conn->close();
 
-                  return $bookedDates;
+                  return $bookedDates2;
               }
 
               // Текущий год
@@ -546,13 +545,13 @@
                       die("Ошибка подключения: " . $conn->connect_error);
                   }
                   // Обработка формы бронирования
-                  if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
-                      $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
-                      $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
+                  if (isset($_POST['start_date2']) && isset($_POST['end_date2'])) {
+                      $start_date = mysqli_real_escape_string($conn, $_POST['start_date2']);
+                      $end_date = mysqli_real_escape_string($conn, $_POST['end_date2']);
                       // Запрос на добавление брони в базу данных
-                      $stmt = $conn->prepare("INSERT INTO U_vod_house (startDate, endDate) VALUES (?, ?)");
-                      $stmt->bind_param("ss", $start_date, $end_date);
-                      if ($stmt->execute()) {
+                      $stmt_u_vod = $conn->prepare("INSERT INTO U_vod_house (startDate, endDate) VALUES (?, ?)");
+                      $stmt_u_vod->bind_param("ss", $start_date, $end_date);
+                      if ($stmt_u_vod->execute()) {
                           // Редирект после успешного добавления бронирования
                           header("Location: bron.php");
                           exit();
@@ -569,8 +568,8 @@
               <div class="event-form">
                 <h3>Бронирование</h3>
                 <form method="POST" action="">
-                  <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required>
-                  <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
+                  <input type="date" name="start_date2" id="event-start-date" placeholder="Start Date" required>
+                  <input type="date" name="end_date2" id="event-end-date" placeholder="End Date" required>
                   <button class="sub" type="submit" id="add-event-btn">Забронировать</button>
                 </form>
               </div>
@@ -603,9 +602,9 @@
                   $currentMonth = date('n');
                   $currentYear = date('Y');
 
-                  $bookedDates = array();
-                  if($bookedDates == null){
-                    $bookedDates = getBookedDatesFromDatabase3();
+                  $bookedDates3 = array();
+                  if($bookedDates3 == null){
+                    $bookedDates3 = getBookedDatesFromDatabase3();
                 }
 
                   for ($month = 1; $month <= 12; $month++) {
@@ -642,7 +641,7 @@
                               if ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) {
                                   $class .= 'current-day ';
                               }
-                              $isBooked = in_array("$year-$month-$dayCounter", $bookedDates);
+                              $isBooked = in_array("$year-$month-$dayCounter", $bookedDates3);
                               $class .= $isBooked ? 'booked-day' : '';
 
                               $calendar3 .= "<td class='$class'>$dayCounter</td>";
@@ -673,7 +672,7 @@
               // Получение забронированных дат из базы данных
               function getBookedDatesFromDatabase3()
               {
-                  $bookedDates = array();
+                  $bookedDates3 = array();
 
                   $servername = "localhost";
                   $username = "user";
@@ -686,8 +685,8 @@
                       die("Ошибка подключения: " . $conn->connect_error);
                   }
                   // Запрос на получение забронированных дат
-                  $sql = "SELECT startDate, endDate FROM Spher_house";
-                  $result = $conn->query($sql);
+                  $sql_spher = "SELECT startDate, endDate FROM Spher_house";
+                  $result = $conn->query($sql_spher);
 
                   if ($result->num_rows > 0) {
                       // Добавление забронированных дат в массив
@@ -698,18 +697,18 @@
                           $start = new DateTime($startDate);
                           $end = new DateTime($endDate);
 
-                          $interval = DateInterval::createFromDateString('1 day');
+                          $interval = new DateInterval('P1D');
                           $period = new DatePeriod($start, $interval, $end);
 
                           foreach ($period as $date) {
-                            $bookedDates[] = $date->format("Y-n-j");
+                            $bookedDates3[] = $date->format("Y-n-j");
                           }
                       }
                   }
 
                   $conn->close();
 
-                  return $bookedDates;
+                  return $bookedDates3;
               }
 
               // Текущий год
@@ -727,13 +726,13 @@
                       die("Ошибка подключения: " . $conn->connect_error);
                   }
                   // Обработка формы бронирования
-                  if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
-                      $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
-                      $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
+                  if (isset($_POST['start_date3']) && isset($_POST['end_date3'])) {
+                      $start_date = mysqli_real_escape_string($conn, $_POST['start_date3']);
+                      $end_date = mysqli_real_escape_string($conn, $_POST['end_date3']);
                       // Запрос на добавление брони в базу данных
-                      $stmt = $conn->prepare("INSERT INTO Spher_house (startDate, endDate) VALUES (?, ?)");
-                      $stmt->bind_param("ss", $start_date, $end_date);
-                      if ($stmt->execute()) {
+                      $stmt_spher = $conn->prepare("INSERT INTO Spher_house (startDate, endDate) VALUES (?, ?)");
+                      $stmt_spher->bind_param("ss", $start_date, $end_date);
+                      if ($stmt_spher->execute()) {
                           // Редирект после успешного добавления бронирования
                           header("Location: bron.php");
                           exit();
@@ -750,8 +749,8 @@
               <div class="event-form">
                 <h3>Бронирование</h3>
                 <form method="POST" action="">
-                  <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required>
-                  <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
+                  <input type="date" name="start_date3" id="event-start-date" placeholder="Start Date" required>
+                  <input type="date" name="end_date3" id="event-end-date" placeholder="End Date" required>
                   <button class="sub" type="submit" id="add-event-btn">Забронировать</button>
                 </form>
               </div>
@@ -783,9 +782,9 @@
                     $currentMonth = date('n');
                     $currentYear = date('Y');
 
-                    $bookedDates = array();
-                  if($bookedDates == null){
-                    $bookedDates = getBookedDatesFromDatabase4();
+                    $bookedDates4 = array();
+                  if($bookedDates4 == null){
+                    $bookedDates4 = getBookedDatesFromDatabase4();
                 }
 
                     for ($month = 1; $month <= 12; $month++) {
@@ -822,7 +821,7 @@
                                 if ($dayCounter == $currentDay && $month == $currentMonth && $year == $currentYear) {
                                     $class .= 'current-day ';
                                 }
-                                $isBooked = in_array("$year-$month-$dayCounter", $bookedDates);
+                                $isBooked = in_array("$year-$month-$dayCounter", $bookedDates4);
                                 $class .= $isBooked ? 'booked-day' : '';
 
                                 $calendar4 .= "<td class='$class'>$dayCounter</td>";
@@ -853,7 +852,7 @@
                 // Получение забронированных дат из базы данных
                 function getBookedDatesFromDatabase4()
                 {
-                    $bookedDates = array();
+                    $bookedDates4 = array();
 
                     $servername = "localhost";
                   $username = "user";
@@ -867,8 +866,8 @@
                     }
 
                     // Запрос на получение забронированных дат
-                    $sql = "SELECT startDate, endDate FROM Trail_house";
-                    $result = $conn->query($sql);
+                    $sql_trail = "SELECT startDate, endDate FROM Trail_house";
+                    $result = $conn->query($sql_trail);
 
                     if ($result->num_rows > 0) {
                         // Добавление забронированных дат в массив
@@ -879,18 +878,18 @@
                             $start = new DateTime($startDate);
                             $end = new DateTime($endDate);
 
-                            $interval = DateInterval::createFromDateString('1 day');
+                            $interval = new DateInterval('P1D');
                             $period = new DatePeriod($start, $interval, $end);
 
                             foreach ($period as $date) {
-                                $bookedDates[] = $date->format("Y-n-j");
+                                $bookedDates4[] = $date->format("Y-n-j");
                               }
                         }
                     }
 
                     $conn->close();
 
-                    return $bookedDates;
+                    return $bookedDates4;
                 }
 
                 // Текущий год
@@ -908,13 +907,13 @@
                         die("Ошибка подключения: " . $conn->connect_error);
                     }
                     // Обработка формы бронирования
-                    if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
-                        $start_date = mysqli_real_escape_string($conn, $_POST['start_date']);
-                        $end_date = mysqli_real_escape_string($conn, $_POST['end_date']);
+                    if (isset($_POST['start_date4']) && isset($_POST['end_date4'])) {
+                        $start_date = mysqli_real_escape_string($conn, $_POST['start_date4']);
+                        $end_date = mysqli_real_escape_string($conn, $_POST['end_date4']);
                         // Запрос на добавление брони в базу данных
-                        $stmt = $conn->prepare("INSERT INTO Trail_house (startDate, endDate) VALUES (?, ?)");
-                        $stmt->bind_param("ss", $start_date, $end_date);
-                        if ($stmt->execute()) {
+                        $stmt_trail = $conn->prepare("INSERT INTO Trail_house (startDate, endDate) VALUES (?, ?)");
+                        $stmt_trail->bind_param("ss", $start_date, $end_date);
+                        if ($stmt_trail->execute()) {
                             // Редирект после успешного добавления бронирования
                             header("Location: bron.php");
                             exit();
@@ -931,8 +930,8 @@
               <div class="event-form">
                 <h3>Бронирование</h3>
                 <form method="POST" action="">
-                  <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required>
-                  <input type="date" name="end_date" id="event-end-date" placeholder="End Date" required>
+                  <input type="date" name="start_date4" id="event-start-date" placeholder="Start Date" required>
+                  <input type="date" name="end_date4" id="event-end-date" placeholder="End Date" required>
                   <button type="submit" id="add-event-btn">Забронировать</button>
                 </form>
               </div>
