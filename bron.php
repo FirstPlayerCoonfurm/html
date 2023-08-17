@@ -167,43 +167,13 @@
 
               // Текущий год
               $currentYear = date('Y');
-
-              if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $servername = "localhost";
-                  $username = "sammy";
-                  $password = "PaSsWoRd";
-                  $dbname = "HOUSES";
-
-                  $conn = new mysqli($servername, $username, $password, $dbname);
-                  // Проверка соединения
-                  if ($conn->connect_error) {
-                      die("Ошибка подключения: " . $conn->connect_error);
-                  }
-                  // Обработка формы бронирования
-                  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $full_name = $_POST['full_name'];
-                    $email = $_POST['email'];
-                    $start_date = $_POST['start_date'];
-                    $end_date = $_POST['end_date'];
-                    $stmt_marb = $conn->prepare("INSERT INTO Список_Марбака (ФИО, Email, start_date, end_date, Дом) VALUES ('$full_name', '$email', '$start_date', '$end_date', 'Мабрака')");
-                    if ($stmt_marb->execute()) {
-                          // Редирект после успешного добавления бронирования
-                          print_r($stmt_marb);
-                          header("Location: bron.php");
-                          exit();
-                      } else {
-                          echo "Ошибка при добавлении бронирования: " . $conn->error;
-                      }
-                      $conn->close();
-                }
-              }
                 
               echo createCalendar($currentYear);
               ?>
               </div>
               <div class="event-form">
                 <h3>Форма бронирования Марбака</h3>
-                <form method="POST" action="">
+                <form method="POST" action="Marb.php">
                     <input type="text" name="full_name" id="full-name" placeholder="ФИО" required>
                     <input type="email" name="email" id="email" placeholder="Email" required>
                     <input type="date" name="start_date" id="event-start-date" placeholder="Start Date" required> 
@@ -355,42 +325,12 @@
 
               // Текущий год
               $currentYear = date('Y');
-
-              if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $servername = "localhost";
-                  $username = "sammy";
-                  $password = "PaSsWoRd";
-                  $dbname = "HOUSES";
-
-                  $conn = new mysqli($servername, $username, $password, $dbname);
-                  // Проверка соединения
-                  if ($conn->connect_error) {
-                      die("Ошибка подключения: " . $conn->connect_error);
-                  }
-                  // Обработка формы бронирования
-                  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $full_name_1 = $_POST['full_name_1'];
-                    $email_1 = $_POST['email_1'];
-                    $start_date_1 = $_POST['start_date_1'];
-                    $end_date_1 = $_POST['end_date_1'];
-                    $stmt_proff = $conn->prepare("INSERT INTO Список_Профессор (ФИО, Email, start_date, end_date, Дом) VALUES ('$full_name_1', '$email_1', '$start_date_1', '$end_date_1', 'Профессор')");
-                    if ($stmt_proff->execute()) {
-                          // Редирект после успешного добавления бронирования
-                          echo("<script>alert('Ваша заява успешно доставлена!');</script>");
-                          header("Location: bron.php");
-                          exit();
-                      } else {
-                          echo "Ошибка при добавлении бронирования: " . $conn->error;
-                      }
-                      $conn->close();
-                }
-              }
               echo createCalendar1($currentYear);
               ?>
               </div>
               <div class="event-form">
                 <h3>Форма бронирования Профессор</h3>
-                <form method="POST" action="">
+                <form method="POST" action="Proff.php">
                     <input type="text" name="full_name_1" id="full-name_1" placeholder="ФИО" required>
                     <input type="email" name="email_1" id="email_1" placeholder="Email" required>
                     <input type="date" name="start_date_1" id="event-start-date_1" placeholder="Start Date" required>
@@ -540,42 +480,12 @@
               // Текущий год
               $currentYear = date('Y');
 
-              if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $servername = "localhost";
-                $username = "sammy";
-                $password = "PaSsWoRd";
-                $dbname = "HOUSES";
-
-                  $conn = new mysqli($servername, $username, $password, $dbname);
-                  // Проверка соединения
-                  if ($conn->connect_error) {
-                      die("Ошибка подключения: " . $conn->connect_error);
-                  }
-                  // Обработка формы бронирования
-                  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $full_name = $_POST['full_name2'];
-                    $email = $_POST['email2'];
-                    $start_date = $_POST['start_date2'];
-                    $end_date = $_POST['end_date2'];
-                    $stmt_u_vod = $conn->prepare("INSERT INTO Список_бронирований (ФИО, Email, start_date, end_date, Дом) VALUES ('$full_name', '$email', '$start_date', '$end_date', 'У Воды')");
-                    if ($stmt_u_vod->execute()) {
-                          // Редирект после успешного добавления бронирования
-                          echo("<script>alert('Ваша заява успешно доставлена!');</script>");
-                          header("Location: bron.php");
-                          exit();
-                      } else {
-                          echo "Ошибка при добавлении бронирования: " . $conn->error;
-                      }
-                      $conn->close();
-                }
-            }
-
               echo createCalendar2($currentYear);
               ?>
               </div>
               <div class="event-form">
                 <h3>Форма бронирования У воды</h3>
-                <form method="POST" action="">
+                <form method="POST" action="U_vod.php">
                     <input type="text" name="full_name2" id="full-name2" placeholder="ФИО" required>
                     <input type="email" name="email2" id="email2" placeholder="Email" required>
                     <input type="date" name="start_date2" id="event-start-date2" placeholder="Start Date" required>
@@ -724,42 +634,12 @@
               // Текущий год
               $currentYear = date('Y');
 
-              if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $servername = "localhost";
-                  $username = "sammy";
-                  $password = "PaSsWoRd";
-                  $dbname = "HOUSES";
-
-                  $conn = new mysqli($servername, $username, $password, $dbname);
-                  // Проверка соединения
-                  if ($conn->connect_error) {
-                      die("Ошибка подключения: " . $conn->connect_error);
-                  }
-                  // Обработка формы бронирования
-                  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $full_name = $_POST['full_name3'];
-                    $email = $_POST['email3'];
-                    $start_date = $_POST['start_date3'];
-                    $end_date = $_POST['end_date3'];
-                    $stmt_spher = $conn->prepare("INSERT INTO Список_бронирований (ФИО, Email, start_date, end_date, Дом) VALUES ('$full_name', '$email', '$start_date', '$end_date', 'Сфера')");
-                    if ($stmt_spher->execute()) {
-                          // Редирект после успешного добавления бронирования
-                          echo("<script>alert('Ваша заява успешно доставлена!');</script>");
-                          header("Location: bron.php");
-                          exit();
-                      } else {
-                          echo "Ошибка при добавлении бронирования: " . $conn->error;
-                      }
-                      $conn->close();
-                }
-            }
-
               echo createCalendar3($currentYear);
               ?>
               </div>
               <div class="event-form">
                 <h3>Форма бронирования Сфера</h3>
-                <form method="POST" action="">
+                <form method="POST" action="Spher.php">
                     <input type="text" name="full_name3" id="full-name" placeholder="ФИО" required>
                     <input type="email" name="email3" id="email" placeholder="Email" required>
                     <input type="date" name="start_date3" id="event-start-date" placeholder="Start Date" required>
@@ -908,42 +788,12 @@
                 // Текущий год
                 $currentYear = date('Y');
 
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    $servername = "localhost";
-                    $username = "sammy";
-                    $password = "PaSsWoRd";
-                    $dbname = "HOUSES";
-
-                  $conn = new mysqli($servername, $username, $password, $dbname);
-                  // Проверка соединения
-                  if ($conn->connect_error) {
-                      die("Ошибка подключения: " . $conn->connect_error);
-                  }
-                  // Обработка формы бронирования
-                  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $full_name = $_POST['full_name4'];
-                    $email = $_POST['email4'];
-                    $start_date = $_POST['start_date4'];
-                    $end_date = $_POST['end_date4'];
-                    $stmt_trail = $conn->prepare("INSERT INTO Список_бронирований (ФИО, Email, start_date, end_date, Дом) VALUES ('$full_name', '$email', '$start_date', '$end_date', 'Трейлер')");
-                    if ($stmt_trail->execute()) {
-                          // Редирект после успешного добавления бронирования
-                          echo("<script>alert('Ваша заява успешно доставлена!');</script>");
-                          header("Location: bron.php");
-                          exit();
-                      } else {
-                          echo "Ошибка при добавлении бронирования: " . $conn->error;
-                      }
-                      $conn->close();
-                }
-            }
-
                 echo createCalendar4($currentYear);
                 ?>
               </div>
               <div class="event-form">
                 <h3>Форма бронирования Трейлер</h3>
-                <form method="POST" action="">
+                <form method="POST" action="Trail.php">
                     <input type="text" name="full_name4" id="full-name4" placeholder="ФИО" required>
                     <input type="email" name="email4" id="email4" placeholder="Email" required>
                     <input type="date" name="start_date4" id="event-start-date4" placeholder="Start Date" required>
