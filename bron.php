@@ -202,7 +202,7 @@
               ?>
               </div>
               <div class="event-form">
-                <h3>Форма бронирования</h3>
+                <h3>Форма бронирования Марбака</h3>
                 <form method="POST" action="">
                     <input type="text" name="full_name" id="full-name" placeholder="ФИО" required>
                     <input type="email" name="email" id="email" placeholder="Email" required>
@@ -389,7 +389,7 @@
               ?>
               </div>
               <div class="event-form">
-                <h3>Форма бронирования</h3>
+                <h3>Форма бронирования Профессор</h3>
                 <form method="POST" action="">
                     <input type="text" name="full_name_1" id="full-name_1" placeholder="ФИО" required>
                     <input type="email" name="email_1" id="email_1" placeholder="Email" required>
@@ -574,7 +574,7 @@
               ?>
               </div>
               <div class="event-form">
-                <h3>Форма бронирования</h3>
+                <h3>Форма бронирования У воды</h3>
                 <form method="POST" action="">
                     <input type="text" name="full_name2" id="full-name2" placeholder="ФИО" required>
                     <input type="email" name="email2" id="email2" placeholder="Email" required>
@@ -758,7 +758,7 @@
               ?>
               </div>
               <div class="event-form">
-                <h3>Форма бронирования</h3>
+                <h3>Форма бронирования Сфера</h3>
                 <form method="POST" action="">
                     <input type="text" name="full_name3" id="full-name" placeholder="ФИО" required>
                     <input type="email" name="email3" id="email" placeholder="Email" required>
@@ -942,7 +942,7 @@
                 ?>
               </div>
               <div class="event-form">
-                <h3>Форма бронирования</h3>
+                <h3>Форма бронирования Трейлер</h3>
                 <form method="POST" action="">
                     <input type="text" name="full_name4" id="full-name4" placeholder="ФИО" required>
                     <input type="email" name="email4" id="email4" placeholder="Email" required>
