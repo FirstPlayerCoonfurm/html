@@ -19,9 +19,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt_u_vod = $conn->prepare("INSERT INTO Список_У_Воды (ФИО, Email, start_date, end_date, Дом) VALUES ('$full_name', '$email', '$start_date', '$end_date', 'У Воды')");
         if ($stmt_u_vod->execute()) {
               // Редирект после успешного добавления бронирования
-              echo("<script>alert('Ваша заява успешно доставлена!');</script>");
-              header("Location: bron.php");
-              exit();
+            header("Location: bron.php");
+            // Отправка сообщения в Telegram
+            $botToken = '';
+            $chatId = '';
+            $message = 'Новое бронирование в дом У Воды';
+
+            $url = "https://api.telegram.org/bot{$botToken}/sendMessage?chat_id={$chatId}&text={$message}";
+
+            // Отправляем запрос на отправку сообщения
+            file_get_contents($url);
+            exit();
           } else {
               echo "Ошибка при добавлении бронирования: " . $conn->error;
           }
