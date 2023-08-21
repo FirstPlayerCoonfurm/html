@@ -46,13 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         {
             $stmt_marb = $conn->prepare("INSERT INTO Список_Трейлер (ФИО, Email, start_date, end_date, Дом) VALUES (?, ?, ?, ?, 'Трейлер')");
             $stmt_marb->bind_param("ssss", $full_name, $email, $start_date, $end_date);
-
-            $stmt_oher = $conn->prepare("INSERT INTO Список_бронирований (ФИО, Email, start_date, end_date, Дом) VALUES (?, ?, ?, ?, 'Трейлер')");
-            $stmt_other->bind_param("ssss", $full_name, $email, $start_date, $end_date);
             
             $stmt = $conn->prepare("INSERT INTO Trail_house (startDate, endDate) VALUES (?, ?)");
             $stmt->bind_param("ss", $start_date, $end_date);
-            if($stmt_marb->execute() && $stmt->execute() && $stmt_oher->execute())
+            if($stmt_marb->execute() && $stmt->execute())
             {
                 header("Location: bron.php");
 
