@@ -98,6 +98,7 @@
 
                               $isBooked = in_array("$year-$month-$dayCounter", $bookedDates);
                               $class .= $isBooked ? 'booked-day' : '';
+                              
 
                               $calendar .= "<td class='$class'>$dayCounter</td>";
                               $dayCounter++;
@@ -150,7 +151,7 @@
                           $endDate = $row["endDate"];
 
                           $start = new DateTime($startDate);
-                          $end = new DateTime($endDate);
+                          $end = (new DateTime($endDate))->modify('+1 day');
 
                           $interval = new DateInterval('P1D');
                           $period = new DatePeriod($start, $interval, $end);

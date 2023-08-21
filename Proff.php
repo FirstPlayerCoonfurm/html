@@ -1,39 +1,76 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+$current_date = date("Y-m-d"); // Создание переменной с текущей датой
+if ($_SERVER['REQUEST_METHOD'] === 'POST')
+{
     $servername = "localhost";
-      $username = "sammy";
-      $password = "PaSsWoRd";
-      $dbname = "HOUSES";
+    $username = "sammy";
+    $password = "PaSsWoRd";
+    $dbname = "HOUSES";
+    $conn = new mysqli($servername, $username, $password, $dbname);
 
-      $conn = new mysqli($servername, $username, $password, $dbname);
-      // Проверка соединения
-      if ($conn->connect_error) {
-          die("Ошибка подключения: " . $conn->connect_error);
-      }
-      // Обработка формы бронирования
-      if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $full_name = $_POST['full_name_1'];
-        $email = $_POST['email_1'];
-        $start_date = $_POST['start_date_1'];
-        $end_date = $_POST['end_date_1'];
-        $stmt_proff = $conn->prepare("INSERT INTO Список_Профессор (ФИО, Email, start_date, end_date, Дом) VALUES ('$full_name', '$email', '$start_date', '$end_date', 'Профессор')");
-        if ($stmt_proff->execute()) {
-              // Редирект после успешного добавления бронирования
-            header("Location: bron.php");
-            // Отправка сообщения в Telegram
-            $botToken = '';
-            $chatId = '';
-            $message = 'Новое бронирование в дом Профессор';
-
-            $url = "https://api.telegram.org/bot{$botToken}/sendMessage?chat_id={$chatId}&text={$message}";
-
-            // Отправляем запрос на отправку сообщения
-            file_get_contents($url);
-            exit();
-          } else {
-              echo "Ошибка при добавлении бронирования: " . $conn->error;
-          }
-          $conn->close();
+    if($conn->connect_error)
+    {
+        die("Ошибка подключения: " . $conn->connect_error);
     }
-  }
+
+    if($_SERVER["REQUEST_METHOD"] == "POST")
+    {
+        $full_name = $_POST['full_name'];
+        $email = $_POST['email'];
+        $start_date = $_POST['start_date'];
+        $end_date = $_POST['end_date'];
+        
+        if ($start_date < $current_date) {
+            echo "<script>
+            alert('Дата начала бронирования не может быть меньше текущей даты.');
+            window.location.href = 'bron.php';
+            </script>";
+            exit();
+        }
+
+        // Проверка свободных дат
+        $stmt_check = $conn->prepare("SELECT * FROM Список_Профессор WHERE (start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)");
+        $stmt_check->bind_param("ssss", $start_date, $end_date, $start_date, $end_date);
+        $stmt_check->execute();
+        $result = $stmt_check->get_result();
+
+        if($result->num_rows > 0) // Если есть занятые даты
+        {
+            echo "<script>
+            alert('Извините, выбранные даты заняты. Пожалуйста, выберите другие даты.');
+            window.location.href = 'bron.php';
+            </script>";
+            //header("Location: bron.php");
+        }
+        else // Если даты свободны
+        {
+            $stmt_marb = $conn->prepare("INSERT INTO Список_Профессор (ФИО, Email, start_date, end_date, Дом) VALUES (?, ?, ?, ?, 'Профессор')");
+            $stmt_marb->bind_param("ssss", $full_name, $email, $start_date, $end_date);
+            
+            $stmt = $conn->prepare("INSERT INTO Proff_house (startDate, endDate) VALUES (?, ?)");
+            $stmt->bind_param("ss", $start_date, $end_date);
+            if($stmt_marb->execute() && $stmt->execute())
+            {
+                header("Location: bron.php");
+
+                $botToken = '6570973513:AAHm8b_BRZvkdwlwIuMy67GruKtan_tDy4g';
+                $chatId = '-1001913267026';
+                $message = 'Новое бронирование в дом Профессор от ' . $full_name . ' На период c ' . $start_date . ' по ' . $end_date;
+
+                $url = "https://api.telegram.org/bot{$botToken}/sendMessage?chat_id={$chatId}&text={$message}";
+
+                file_get_contents($url);
+                exit();
+            }
+            else
+            {
+                echo "Ошибка при добавлении бронирования: " . $conn->error;
+            }
+        }
+
+        $stmt_check->close();
+        $stmt_marb->close();
+        $conn->close();
+    }
+}
 ?>
