@@ -53,8 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             {
                 header("Location: bron.php");
 
-                $botToken = '6570973513:AAHm8b_BRZvkdwlwIuMy67GruKtan_tDy4g';
-                $chatId = '-1001913267026';
+                $botToken = '';
+                $chatId = '';
                 $message = 'Новое бронирование в дом Трейлер от ' . $full_name . ' На период c ' . $start_date . ' по ' . $end_date;
 
                 $url = "https://api.telegram.org/bot{$botToken}/sendMessage?chat_id={$chatId}&text={$message}";
